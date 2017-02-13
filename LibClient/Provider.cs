@@ -41,7 +41,7 @@ namespace LibClient
                 //,set.metadataDirectoryPath, Settings.metaFileLoc,
                 // set.tempDirectoryPath, set.pathToSaveConflictLoserFiles
             }
-            catch(Exception exc)
+            catch (Exception exc)
             {
                 ex = exc;
             }
@@ -55,12 +55,14 @@ namespace LibClient
         {
             if (sync == null) return;
 
-            sync.DetectChanges();
             try
             {
-                
+                sync.DetectChanges();
             }
-            catch { }
+            catch
+            // daca un fisier se salveaza o sa returneze :
+            //Attempted to read or write protected memory. 
+            { }
         }
 
         public void Dispose()
