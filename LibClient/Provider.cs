@@ -10,18 +10,20 @@ using Microsoft.Synchronization.Files;
 
 namespace LibClient
 {
-    public class Provider
+    public class Provider : IDisposable
     {
-        public FileSyncProvider pro = null;
+        public FileSyncProvider sync = null;
         FileSyncOptions optFileSync;
         FileSyncScopeFilter optFilter;
+
+        Exception ex;
 
         public Provider()
         {
             optFileSync = FileSyncOptions.ExplicitDetectChanges;
 
             FileAttributes excludeFileAttributes =
-            FileAttributes.System | FileAttributes.Hidden;            
+            FileAttributes.System | FileAttributes.Hidden;
 
             optFilter = new FileSyncScopeFilter();
 
@@ -32,25 +34,41 @@ namespace LibClient
 
         public void Start(string path)
         {
+            ex = null;
             try
             {
-                pro = new FileSyncProvider(path, optFilter, optFileSync);
+                sync = new FileSyncProvider(path, optFilter, optFileSync);
                 //,set.metadataDirectoryPath, Settings.metaFileLoc,
                 // set.tempDirectoryPath, set.pathToSaveConflictLoserFiles
             }
+            catch(Exception exc)
+            {
+                ex = exc;
+            }
             finally
             {
-                if (pro != null) pro.Dispose();
+                if (sync != null && ex != null) sync.Dispose();
             }
         }
 
         public void DetectChanges()
         {
-            if (pro == null) return;
+            if (sync == null) return;
 
-            
-                pro.DetectChanges();
+            sync.DetectChanges();
+            try
+            {
+                
+            }
+            catch { }
         }
 
+        public void Dispose()
+        {
+            if (sync != null)
+            {
+                sync.Dispose();
+            }
+        }
     }
 }
