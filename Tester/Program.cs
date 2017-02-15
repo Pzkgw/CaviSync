@@ -8,24 +8,36 @@ namespace Tester
     class Program
     {
 
-        static ServiceCli c;
+        static ServiceCli source;
+        static ServiceServer dest;
         //static int tms;
-        static DateTime dt;
+        static DateTime dts, dtc;
         static void Main(string[] args)
         {
-            
-            //s = new ServiceServer();
-            //s.Start(@"c:\_sync1\");
 
-            c = new ServiceCli();   
-                     
-            c.Start(@"c:\___\");
-            c.pro.sync.DetectingChanges += Sync_DetectingChanges;
-            c.pro.sync.DetectedChanges += Sync_DetectedChanges;
-            c.pro.sync.AppliedChange += Sync_AppliedChange;
+            dest = new ServiceServer();
+            dest.Start(@"c:\_sync1\");
+            dest.pro.sync.DetectingChanges += Sync_DetectingChangesServer;
+            dest.pro.sync.DetectedChanges += Sync_DetectedChangesServer;
+
+            source = new ServiceCli();
+            source.Start(@"c:\___\");
+            source.pro.sync.DetectingChanges += Sync_DetectingChangesClient;
+            source.pro.sync.DetectedChanges += Sync_DetectedChangesClient;
+            source.pro.sync.AppliedChange += Sync_AppliedChange;
 
 
             Console.ReadKey();
+        }
+
+        private static void Sync_DetectedChanges1(object sender, DetectedChangesEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        private static void Sync_DetectingChanges1(object sender, DetectingChangesEventArgs e)
+        {
+            throw new NotImplementedException();
         }
 
         private static void Sync_AppliedChange(object sender, AppliedChangeEventArgs args)
@@ -48,15 +60,26 @@ namespace Tester
             }
         }
 
-        private static void Sync_DetectingChanges(object sender, Microsoft.Synchronization.Files.DetectingChangesEventArgs e)
+        private static void Sync_DetectingChangesClient(object sender, Microsoft.Synchronization.Files.DetectingChangesEventArgs e)
         {
-            dt = DateTime.Now;
+            dtc = DateTime.Now;
             //Console.WriteLine(string.Format("DetectingChanges start"));
         }
 
-        private static void Sync_DetectedChanges(object sender, Microsoft.Synchronization.Files.DetectedChangesEventArgs e)
+        private static void Sync_DetectedChangesClient(object sender, Microsoft.Synchronization.Files.DetectedChangesEventArgs e)
         {
-            Console.WriteLine(string.Format(" Changes detected time(ms): {0}", DateTime.Now.Subtract(dt).Milliseconds));
+            Console.WriteLine(string.Format(" Client detected time(ms): {0}", DateTime.Now.Subtract(dtc).Milliseconds));
+        }
+
+        private static void Sync_DetectingChangesServer(object sender, Microsoft.Synchronization.Files.DetectingChangesEventArgs e)
+        {
+            dts = DateTime.Now;
+            //Console.WriteLine(string.Format("DetectingChanges start"));
+        }
+
+        private static void Sync_DetectedChangesServer(object sender, Microsoft.Synchronization.Files.DetectedChangesEventArgs e)
+        {
+            Console.WriteLine(string.Format(" Server changes detected time(ms): {0}", DateTime.Now.Subtract(dts).Milliseconds));
         }
 
 

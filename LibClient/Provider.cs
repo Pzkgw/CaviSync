@@ -1,11 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Library;
-using Microsoft.Synchronization;
 using Microsoft.Synchronization.Files;
 
 namespace LibClient
@@ -57,10 +52,11 @@ namespace LibClient
 
             try
             {
+                // if((detect time) > (time interval(500 ms))) --> uncatched error
                 sync.DetectChanges();
             }
             catch
-            // daca un fisier se salveaza o sa returneze :
+            // Sa nu interactioneze 2 detectii, altfel :
             //Attempted to read or write protected memory. 
             { }
         }

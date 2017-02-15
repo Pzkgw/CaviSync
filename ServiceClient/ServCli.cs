@@ -21,7 +21,7 @@ namespace ServiceClient
             pro.Start(path);
 
             tim = new Timer();
-            tim.Interval = 500;
+            tim.Interval = 2000;
             tim.Elapsed += Tim_Elapsed;
             tim.Start();
         }
