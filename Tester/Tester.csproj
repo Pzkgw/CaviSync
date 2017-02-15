@@ -14,7 +14,7 @@
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
+    <PlatformTarget>x86</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -57,6 +57,10 @@
     <ProjectReference Include="..\LibClient\LibClient.csproj">
       <Project>{439dfc43-05e3-4815-8e24-73f74b55cfb7}</Project>
       <Name>LibClient</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Library\Lib.csproj">
+      <Project>{34f1d368-f08a-4a20-8955-ae38413c661a}</Project>
+      <Name>Lib</Name>
     </ProjectReference>
     <ProjectReference Include="..\LibServer\LibServer.csproj">
       <Project>{38483f97-ac04-4d43-bbe6-868400a4543d}</Project>

@@ -68,7 +68,8 @@ namespace Tester
 
         private static void Sync_DetectedChangesClient(object sender, Microsoft.Synchronization.Files.DetectedChangesEventArgs e)
         {
-            Console.WriteLine(string.Format(" Client detected time(ms): {0}", DateTime.Now.Subtract(dtc).Milliseconds));
+            Console.WriteLine(string.Format(" Client time for detection(ms): {0} {1}",
+                DateTime.Now.Subtract(dtc).Milliseconds, source.pro.id));
         }
 
         private static void Sync_DetectingChangesServer(object sender, Microsoft.Synchronization.Files.DetectingChangesEventArgs e)
@@ -79,7 +80,8 @@ namespace Tester
 
         private static void Sync_DetectedChangesServer(object sender, Microsoft.Synchronization.Files.DetectedChangesEventArgs e)
         {
-            Console.WriteLine(string.Format(" Server changes detected time(ms): {0}", DateTime.Now.Subtract(dts).Milliseconds));
+            Console.WriteLine(string.Format(" Server time for detection(ms): {0} {1}",
+                DateTime.Now.Subtract(dts).Milliseconds, dest.pro.id));
         }
 
 
