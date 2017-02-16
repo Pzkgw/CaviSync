@@ -60,27 +60,27 @@ namespace Tester
             }
         }
 
-        private static void Sync_DetectingChangesClient(object sender, Microsoft.Synchronization.Files.DetectingChangesEventArgs e)
+        private static void Sync_DetectingChangesClient(object sender, DetectingChangesEventArgs e)
         {
             dtc = DateTime.Now;
             //Console.WriteLine(string.Format("DetectingChanges start"));
         }
 
-        private static void Sync_DetectedChangesClient(object sender, Microsoft.Synchronization.Files.DetectedChangesEventArgs e)
+        private static void Sync_DetectedChangesClient(object sender, DetectedChangesEventArgs e)
         {
-            Console.WriteLine(string.Format(" Client time for detection(ms): {0} {1}",
+            Console.WriteLine(string.Format(" Client time for detection(ms): {0,4}  {1}",
                 DateTime.Now.Subtract(dtc).Milliseconds, source.pro.id));
         }
 
-        private static void Sync_DetectingChangesServer(object sender, Microsoft.Synchronization.Files.DetectingChangesEventArgs e)
+        private static void Sync_DetectingChangesServer(object sender, DetectingChangesEventArgs e)
         {
             dts = DateTime.Now;
             //Console.WriteLine(string.Format("DetectingChanges start"));
         }
 
-        private static void Sync_DetectedChangesServer(object sender, Microsoft.Synchronization.Files.DetectedChangesEventArgs e)
+        private static void Sync_DetectedChangesServer(object sender, DetectedChangesEventArgs e)
         {
-            Console.WriteLine(string.Format(" Server time for detection(ms): {0} {1}",
+            Console.WriteLine(string.Format(" Server time for detection(ms): {0,4}  {1}",
                 DateTime.Now.Subtract(dts).Milliseconds, dest.pro.id));
         }
 

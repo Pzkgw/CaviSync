@@ -14,8 +14,19 @@ using System.Threading.Tasks;
 
 namespace Library
 {
-    public class Utils
+    public static class Utils
     {
+        public static string[] ToArray(this IEnumerable<string> source)
+        {
+            int length = Enumerable.Count(source);
+            string[] newArray = new string[length];
+            for (int i = 0; i < length; i++)
+            {
+                newArray[i] = source.ElementAt(i);
+            }
+            return newArray;
+        }
+
 
         /// <summary>
         /// Get all files from a directory, exluding cerain extensions
@@ -180,6 +191,70 @@ namespace Library
             return retVal;
             //MessageBox.Show("ExitCode: " + ExitCode.ToString(), "ExecuteCommand");
         }
+
+
+        /*
+        [Flags]
+        public enum FileCompareFlags
+        {
+            All = 0,
+            FullName = 1,
+            Created = 2,
+            LastAccess = 4,
+            LastWrite = 8,
+            Length = 16,
+            CreatedUTC = 32,
+            LastAccessUTC = 64,
+            LastWriteUTC = 128,
+            Attributes = 256,
+            Extension = 512,
+            UnrootedName = 1024
+        };
+
+
+        //--------------------------------------------------------------------------------
+        private static bool FlagIsSet(FileCompareFlags flags, FileCompareFlags flag)
+        {
+            bool isSet = ((flags & flag) == flag);
+            return isSet;
+        }
+
+        //--------------------------------------------------------------------------------
+        public static bool Equal(this FileInfo fileA, FileInfo fileB, FileCompareFlags flags)
+        {
+            bool isEqual = (fileA.EqualityFlags(fileB, flags) == flags);
+            return isEqual;
+        }
+
+
+
+        public static FileCompareFlags EqualityFlags(this FileInfo fileA, FileInfo fileB, FileCompareFlags flags)
+        {
+            FileCompareFlags equalFlags = FileCompareFlags.All;
+            equalFlags |= (FlagIsSet(flags, FileCompareFlags.Attributes) &&
+                           fileA.Attributes == fileB.Attributes) ? FileCompareFlags.Attributes : 0;
+            equalFlags |= (FlagIsSet(flags, FileCompareFlags.Created) &&
+                           fileA.CreationTime == fileB.CreationTime) ? FileCompareFlags.Created : 0;
+            equalFlags |= (FlagIsSet(flags, FileCompareFlags.CreatedUTC) &&
+                           fileA.CreationTimeUtc == fileB.CreationTimeUtc) ? FileCompareFlags.CreatedUTC : 0;
+            equalFlags |= (FlagIsSet(flags, FileCompareFlags.Extension) &&
+                           fileA.Extension == fileB.Extension) ? FileCompareFlags.Extension : 0;
+            equalFlags |= (FlagIsSet(flags, FileCompareFlags.LastAccess) &&
+                           fileA.LastAccessTime == fileB.LastAccessTime) ? FileCompareFlags.LastAccess : 0;
+            equalFlags |= (FlagIsSet(flags, FileCompareFlags.LastAccessUTC) &&
+                           fileA.LastAccessTimeUtc == fileB.LastAccessTimeUtc) ? FileCompareFlags.LastAccessUTC : 0;
+            equalFlags |= (FlagIsSet(flags, FileCompareFlags.LastWrite) &&
+                           fileA.LastWriteTime == fileB.LastWriteTime) ? FileCompareFlags.LastWrite : 0;
+            equalFlags |= (FlagIsSet(flags, FileCompareFlags.LastWriteUTC) &&
+                           fileA.LastWriteTimeUtc == fileB.LastWriteTimeUtc) ? FileCompareFlags.LastWriteUTC : 0;
+            equalFlags |= (FlagIsSet(flags, FileCompareFlags.Length) &&
+                           fileA.Length == fileB.Length) ? FileCompareFlags.Length : 0;
+            equalFlags |= (FlagIsSet(flags, FileCompareFlags.FullName) &&
+                           fileA.FullName == fileB.FullName) ? FileCompareFlags.FullName : 0;
+            return equalFlags;
+        }
+        */
+
 
 
         /*
