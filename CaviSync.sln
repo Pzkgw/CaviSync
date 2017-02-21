@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileServer.Services", "FileServer.Services\FileServer.Services.csproj", "{0357B25D-7F29-4CBD-930B-5571D15B9969}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MainLib", "MainLib\MainLib.csproj", "{0357B25D-7F29-4CBD-930B-5571D15B9969}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileServer", "FileServer\FileServer.csproj", "{84BBED6F-3F3D-475D-85D7-0779BBE69450}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleServer", "ConsoleServer\ConsoleServer.csproj", "{84BBED6F-3F3D-475D-85D7-0779BBE69450}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileServerWinClient", "FileServerWinClient\FileServerWinClient.csproj", "{F8D1C67D-A31D-4E16-B831-14180316AA67}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GuiClient", "GuiClient\GuiClient.csproj", "{F8D1C67D-A31D-4E16-B831-14180316AA67}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

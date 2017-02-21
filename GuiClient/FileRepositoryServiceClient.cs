@@ -24,10 +24,16 @@ namespace FileServerWinClient
 
 		public void PutFile(FileUploadMessage msg)
 		{
-			base.Channel.PutFile(msg);
-		}
+            // Cazuri de eroare la conexiune:
 
-		public void DeleteFile(string virtualPath)
+            // 1. Serverul nu e pornit:
+            //TCP error code 10061: No connection could be made because the target machine actively refused it
+
+            base.Channel.PutFile(msg);
+
+        }
+
+        public void DeleteFile(string virtualPath)
 		{
 			base.Channel.DeleteFile(virtualPath);
 		}

@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("FileServer.Services")]
+[assembly: AssemblyTitle("CaviSyncBase")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Hewlett-Packard")]
-[assembly: AssemblyProduct("FileServer.Services")]
-[assembly: AssemblyCopyright("Copyright © Hewlett-Packard 2009")]
+[assembly: AssemblyCompany("GI")]
+[assembly: AssemblyProduct("CaviSyncBase")]
+[assembly: AssemblyCopyright("Copyright ©  2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("5bc4d2c9-7d4d-4521-bdee-2494d8a4f29c")]
+[assembly: Guid("68a57b50-17bc-4d6c-a985-52b970a1ac4f")]
 
 // Version information for an assembly consists of the following four values:
 //

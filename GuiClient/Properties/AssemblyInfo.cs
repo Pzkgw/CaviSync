@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("FileServer")]
+[assembly: AssemblyTitle("GuiClient")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Hewlett-Packard")]
-[assembly: AssemblyProduct("FileServer")]
-[assembly: AssemblyCopyright("Copyright © Hewlett-Packard 2009")]
+[assembly: AssemblyCompany("GI")]
+[assembly: AssemblyProduct("GuiClient")]
+[assembly: AssemblyCopyright("Copyright ©  2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("f829c6be-f80a-4ac4-9e8e-0d8ab14cf18b")]
+[assembly: Guid("1e14ddee-6a71-41f8-bc9d-3c03b9304726")]
 
 // Version information for an assembly consists of the following four values:
 //
