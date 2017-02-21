@@ -1,8 +1,8 @@
 ﻿using System;
-using MainLib;
 using System.ServiceModel;
+using MainLib;
 
-namespace FileServerWinClient
+namespace ConsoleClient
 {
     public class FileRepositoryServiceClient : ClientBase<IFileRepositoryService>, IFileRepositoryService, IDisposable
     {

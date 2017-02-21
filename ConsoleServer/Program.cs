@@ -18,7 +18,8 @@ namespace MainLib
 			service = new FileRepositoryService();
 			service.RepositoryDirectory = "Depozit";
 
-			service.FileRequested += new FileEventHandler(Service_FileRequested);
+
+            service.FileRequested += new FileEventHandler(Service_FileRequested);
 			service.FileUploaded += new FileEventHandler(Service_FileUploaded);
 			service.FileDeleted += new FileEventHandler(Service_FileDeleted);
 
