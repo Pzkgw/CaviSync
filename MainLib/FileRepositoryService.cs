@@ -5,7 +5,7 @@ using System.Text;
 using System.ServiceModel;
 using System.IO;
 
-namespace FileServer.Services
+namespace MainLib
 {
 	[ServiceBehavior(IncludeExceptionDetailInFaults=true,
 		InstanceContextMode=InstanceContextMode.Single)]

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using FileServer.Services;
+using MainLib;
 using System.ServiceModel;
 using System.IO;
 

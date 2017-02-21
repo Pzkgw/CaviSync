@@ -2,7 +2,7 @@
 using System;
 using System.IO;
 
-namespace FileServer.Services
+namespace MainLib
 {
 	public static class StreamExtensions
 	{

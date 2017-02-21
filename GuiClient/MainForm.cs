@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using System.IO;
-using FileServer.Services;
+using MainLib;
 using System.Diagnostics;
 
 namespace FileServerWinClient

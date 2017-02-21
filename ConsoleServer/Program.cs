@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using FileServer.Services;
+using MainLib;
 using System.ServiceModel;
 
-namespace FileServer
+namespace MainLib
 {
 	class Program
 	{
@@ -16,7 +16,7 @@ namespace FileServer
 		{
 
 			service = new FileRepositoryService();
-			service.RepositoryDirectory = "storage";
+			service.RepositoryDirectory = "Depozit";
 
 			service.FileRequested += new FileEventHandler(Service_FileRequested);
 			service.FileUploaded += new FileEventHandler(Service_FileUploaded);
