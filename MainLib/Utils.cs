@@ -119,6 +119,31 @@ namespace MainLib
         }
 
 
+        public static bool IsFileLocked(FileInfo e)
+        {
+            FileStream stream = null;
+
+            try
+            {
+                stream = File.Open(e.FullName, FileMode.Open, FileAccess.ReadWrite, FileShare.ReadWrite);
+            }
+            catch (IOException)
+            {
+                return true;
+            }
+            finally
+            {
+                if (stream != null)
+                {
+                    stream.Dispose();
+                }
+            }
+
+            return false;
+        }
+
+
+
         /// <summary>
         /// True = path valid cu AccessControl sau URI care respecta conventia de nume UNC
         /// </summary>

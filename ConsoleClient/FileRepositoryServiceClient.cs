@@ -7,9 +7,8 @@ namespace ConsoleClient
     public class FileRepositoryServiceClient : ClientBase<IFileRepositoryService>, IFileRepositoryService, IDisposable
     {
         public FileRepositoryServiceClient(string s) : base("FileRepositoryService")
-        {
-            //Endpoint.Address = new EndpointAddress("net.tcp://10.10.10.15:5000");
-            Endpoint.Address = new EndpointAddress(s);
+        {            
+            Endpoint.Address = new EndpointAddress(s);//("net.tcp://10.10.10.15:5000");
         }
 
         #region IFileRepositoryService Members
@@ -21,12 +20,15 @@ namespace ConsoleClient
 
         public void PutFile(FileUploadMessage msg)
         {
-            // Cazuri de eroare la conexiune:
-
-            // 1. Serverul nu e pornit:
+            try
+            {
+                base.Channel.PutFile(msg);
+            }
+            //Serverul nu e pornit:
             //TCP error code 10061: No connection could be made because the target machine actively refused it
-
-            base.Channel.PutFile(msg);
+            catch (EndpointNotFoundException)
+            {
+            }
 
         }
 
