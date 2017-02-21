@@ -6,9 +6,10 @@ namespace ConsoleClient
 {
     public class FileRepositoryServiceClient : ClientBase<IFileRepositoryService>, IFileRepositoryService, IDisposable
     {
-        public FileRepositoryServiceClient() : base("FileRepositoryService")
+        public FileRepositoryServiceClient(string s) : base("FileRepositoryService")
         {
-            Endpoint.Address = new EndpointAddress("net.tcp://10.10.10.15:5000");
+            //Endpoint.Address = new EndpointAddress("net.tcp://10.10.10.15:5000");
+            Endpoint.Address = new EndpointAddress(s);
         }
 
         #region IFileRepositoryService Members

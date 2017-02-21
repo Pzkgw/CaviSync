@@ -110,7 +110,7 @@ namespace FileServerWinClient
 						downloadStream.CopyTo(output);
 					}
 
-					Process.Start(dlg.FileName);
+					//Process.Start(dlg.FileName);
 				}
 			}
 

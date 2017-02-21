@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MainLib;
 
 namespace ConsoleClient
 {
@@ -10,13 +11,8 @@ namespace ConsoleClient
     {
         static void Main(string[] args)
         {
-
-            Console.ReadKey();
-
-            Console.ReadKey();
-
-            Console.ReadKey();
-
+            Seeker seek = new Seeker();
+            seek.Execute();
         }
     }
 }
