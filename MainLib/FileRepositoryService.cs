@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.ServiceModel;
 using System.IO;
+using System.Net;
 
 namespace MainLib
 {
@@ -94,19 +95,33 @@ namespace MainLib
 				   select new StorageFileInfo()
 				   {
 					   Size = f.Length,
-					   VirtualPath = f.FullName.Substring(f.FullName.IndexOf(RepositoryDirectory) + RepositoryDirectory.Length + 1)
+					   VirtualPath = f.FullName.Substring(f.FullName.IndexOf(RepositoryDirectory) + RepositoryDirectory.Length + 1),
+                       LastWriteTimeUtc = f.LastWriteTimeUtc
 				   }).ToArray();
 		}
 
-		#endregion
 
+        public void GetConnectionInfo(ref string ip, ref int port)
+        {
+            IPAddress ipAddress = Utils.GetLocalIpAddress();
+            ip = (ipAddress != null) ? ipAddress.ToString() : null;
 
-		#region Events
+            port = Optiuni.EndpointPort;
+        }
 
-		/// <summary>
-		/// Raises the FileRequested event.
-		/// </summary>
-		protected void SendFileRequested(string vPath)
+        public string GetSyncDirectory()
+        {
+            return null;
+        }
+
+        #endregion
+
+        #region Events
+
+        /// <summary>
+        /// Raises the FileRequested event.
+        /// </summary>
+        protected void SendFileRequested(string vPath)
 		{
 			if (FileRequested != null)
 				FileRequested(this, new FileEventArgs(vPath));

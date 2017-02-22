@@ -6,9 +6,14 @@ namespace ConsoleClient
 {
     public class FileRepositoryServiceClient : ClientBase<IFileRepositoryService>, IFileRepositoryService, IDisposable
     {
-        public FileRepositoryServiceClient(string s) : base("FileRepositoryService")
+        public FileRepositoryServiceClient() : base("FileRepositoryService")
         {            
-            Endpoint.Address = new EndpointAddress(s);//("net.tcp://10.10.10.15:5000");
+           
+        }
+
+        public void SetEndpointAddress()
+        {
+            Endpoint.Address = new EndpointAddress(Optiuni.GetEndpointAddress());
         }
 
         #region IFileRepositoryService Members
@@ -37,14 +42,24 @@ namespace ConsoleClient
             base.Channel.DeleteFile(virtualPath);
         }
 
-        public StorageFileInfo[] List()
-        {
-            return List(null);
-        }
+        //public StorageFileInfo[] List()
+        //{
+        //    return List(null);
+        //}
 
         public StorageFileInfo[] List(string virtualPath)
         {
             return base.Channel.List(virtualPath);
+        }
+
+        public void GetConnectionInfo(ref string ip, ref int port)
+        {
+            base.Channel.GetConnectionInfo(ref ip, ref port);
+        }
+
+        public string GetSyncDirectory()
+        {
+            return null;
         }
 
         #endregion

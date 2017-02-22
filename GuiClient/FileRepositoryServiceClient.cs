@@ -8,7 +8,7 @@ namespace FileServerWinClient
     {
         public FileRepositoryServiceClient() : base("FileRepositoryService")
         {
-            Endpoint.Address = new EndpointAddress("net.tcp://10.10.10.15:5000");
+            Endpoint.Address = new EndpointAddress(Optiuni.GetEndpointAddress());
         }
 
         #region IFileRepositoryService Members
@@ -34,14 +34,24 @@ namespace FileServerWinClient
             base.Channel.DeleteFile(virtualPath);
         }
 
-        public StorageFileInfo[] List()
-        {
-            return List(null);
-        }
+        //public StorageFileInfo[] List()
+        //{
+        //    return List(null);
+        //}
 
         public StorageFileInfo[] List(string virtualPath)
         {
             return base.Channel.List(virtualPath);
+        }
+
+        public void GetConnectionInfo(ref string ip, ref int port)
+        {
+            base.Channel.GetConnectionInfo(ref ip, ref port);
+        }
+
+        public string GetSyncDirectory()
+        {
+            return null;
         }
 
         #endregion

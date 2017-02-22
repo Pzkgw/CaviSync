@@ -18,5 +18,11 @@ namespace MainLib
 		/// </summary>
 		public long Size { get; set; }
 
-	}
+
+        /// <summary>
+        /// Gets or sets the size of the file (in bytes)
+        /// </summary>
+        public DateTime LastWriteTimeUtc { get; set; }
+
+    }
 }

@@ -22,5 +22,12 @@ namespace MainLib
 
 		[OperationContract]
 		StorageFileInfo[] List(string virtualPath);
-	}
+
+        [OperationContract]
+        void GetConnectionInfo(ref string ip, ref int port);
+
+        [OperationContract]
+        string GetSyncDirectory();
+
+    }
 }

@@ -14,9 +14,6 @@ namespace ConsoleClient
         public static string[] excludeFileExtensions =
             new string[] { "*.tmp", "*.lnk", "*.pst" };
 
-        private string
-            dirLocal = @"C:\Users\bogdan.visoiu\Desktop\doc",
-            dirServer = "net.tcp://10.10.10.15:5000";
         public Seeker()
         {
 
@@ -24,9 +21,15 @@ namespace ConsoleClient
 
         internal void Execute()
         {
+            Initialize();
             //ListFiles();
             //StartSyncOnce();
             StartSyncTimed();
+        }
+
+        private void Initialize()
+        {
+            
         }
 
         private void StartSyncTimed()
@@ -49,7 +52,7 @@ namespace ConsoleClient
         private void SyncExec()
         {
             List<string> filesClient =
-            Utils.GetDirectoryFileList(dirLocal, "___", excludeFileExtensions);
+            Utils.GetDirectoryFileList(Optiuni.dirClient, "___", excludeFileExtensions);
 
             foreach (string s in filesClient)
             {
@@ -61,12 +64,13 @@ namespace ConsoleClient
 
                 if (!string.IsNullOrEmpty(f.FullName) && !isl)
                 {
-                    string virtualPath = f.FullName.Substring(dirLocal.Length + 1); // Path.GetFileName(f.FullName);
+                    string virtualPath = f.FullName.Substring(Optiuni.dirClient.Length + 1); // Path.GetFileName(f.FullName);
 
                     using (Stream uploadStream = new FileStream(f.FullName, FileMode.Open))
                     {
-                        using (FileRepositoryServiceClient client = new FileRepositoryServiceClient(dirServer))
+                        using (FileRepositoryServiceClient client = new FileRepositoryServiceClient())
                         {
+                            client.SetEndpointAddress();
                             client.PutFile(new FileUploadMessage() { VirtualPath = virtualPath, DataStream = uploadStream });
                         }
                     }
@@ -89,8 +93,9 @@ namespace ConsoleClient
         private void ListFiles()
         {
 
-            using (FileRepositoryServiceClient client = new FileRepositoryServiceClient(dirServer))
+            using (FileRepositoryServiceClient client = new FileRepositoryServiceClient())
             {
+                client.SetEndpointAddress();
                 files = client.List(null);
             }
 
