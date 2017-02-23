@@ -146,12 +146,17 @@ namespace FileServerWinClient
                     fum.LastWriteTimeUtcTicks = fi.LastWriteTimeUtc.Ticks;
                     fileSize = fi.Length;
                     fi = null;
-                }
+                }                
 
                 using (Stream uploadStream = new FileStream(dlg.FileName, FileMode.Open))
 				{
 					using (FileRepositoryServiceClient client = new FileRepositoryServiceClient())
-					{
+					{                        
+                        string ip = Utils.GetLocalIpAddress().ToString();
+                        int port = Optiuni.EndpointPort;
+                        client.SendConnectionInfo(ip, port);
+                        client.SendSyncDirectory(dlg.FileName);
+
                         fum.DataStream = uploadStream;
 
                         if (client.GetPreUploadCheckResult(fum.VirtualPath, fum.LastWriteTimeUtcTicks, fileSize))

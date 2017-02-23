@@ -49,14 +49,14 @@ namespace FileServerWinClient
             return base.Channel.List(virtualPath);
         }
 
-        public void GetConnectionInfo(ref string ip, ref int port)
+        public void SendConnectionInfo(string ip, int port)
         {
-            base.Channel.GetConnectionInfo(ref ip, ref port);
+            base.Channel.SendConnectionInfo(ip, port);
         }
 
-        public string GetSyncDirectory()
+        public void SendSyncDirectory(string path)
         {
-            return null;
+            base.Channel.SendSyncDirectory(path);
         }
 
         #endregion

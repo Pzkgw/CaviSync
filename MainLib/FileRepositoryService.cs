@@ -19,6 +19,8 @@ namespace MainLib
         public event FileEventHandler FileRequested;
         public event FileEventHandler FileUploaded;
         public event FileEventHandler FileDeleted;
+        public event InfoSendEventHandler InfoSend;
+        public event ClientDirectorySendEventHandler ClientDirectorySendUp;
 
         #endregion
 
@@ -118,18 +120,18 @@ namespace MainLib
                     }).ToArray();
         }
 
-
-        public void GetConnectionInfo(ref string ip, ref int port)
+         
+        public void SendConnectionInfo(string ip, int port)
         {
-            IPAddress ipAddress = Utils.GetLocalIpAddress();
-            ip = (ipAddress != null) ? ipAddress.ToString() : null;
-
-            port = Optiuni.EndpointPort;
+            //IPAddress ipAddress = Utils.GetLocalIpAddress();
+            //ip = (ipAddress != null) ? ipAddress.ToString() : null;
+            //port = Optiuni.EndpointPort;
+            SendConnectionInfoEventUpdate(ip, port);
         }
 
-        public string GetSyncDirectory()
+        public void SendSyncDirectory(string path)
         {
-            return null;
+            SendSyncDirectoryInfo(path);
         }
 
         #endregion
@@ -161,6 +163,20 @@ namespace MainLib
         {
             if (FileDeleted != null)
                 FileDeleted(this, new FileEventArgs(vPath, 0, 0));
+        }
+
+
+        protected void SendConnectionInfoEventUpdate(string ip, int port)
+        {
+            if (InfoSend != null)
+                InfoSend(this, new InfoEventArgs(ip, port));
+        }
+
+
+        protected void SendSyncDirectoryInfo(string path)
+        {
+            if (ClientDirectorySendUp != null)
+                ClientDirectorySendUp(this, new ClientDirectorySendEventArgs(path));
         }
 
         #endregion
