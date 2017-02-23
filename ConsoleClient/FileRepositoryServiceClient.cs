@@ -23,6 +23,11 @@ namespace ConsoleClient
             return base.Channel.GetFile(virtualPath);
         }
 
+        public bool GetPreUploadCheckResult(string msg)
+        {
+            return base.Channel.GetPreUploadCheckResult(msg);
+        }
+
         public void PutFile(FileUploadMessage msg)
         {
             try
@@ -34,7 +39,6 @@ namespace ConsoleClient
             catch (EndpointNotFoundException)
             {
             }
-
         }
 
         public void DeleteFile(string virtualPath)

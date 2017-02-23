@@ -18,6 +18,11 @@ namespace FileServerWinClient
             return base.Channel.GetFile(virtualPath);
         }
 
+        public bool GetPreUploadCheckResult(string msg)
+        {
+            return base.Channel.GetPreUploadCheckResult(msg);
+        }
+
         public void PutFile(FileUploadMessage msg)
         {
             // Cazuri de eroare la conexiune:

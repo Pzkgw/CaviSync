@@ -14,7 +14,10 @@ namespace MainLib
 		[OperationContract]
 		Stream GetFile(string virtualPath);
 
-		[OperationContract]
+        [OperationContract]
+        bool GetPreUploadCheckResult(string path);
+
+        [OperationContract]
 		void PutFile(FileUploadMessage msg);
 
 		[OperationContract]

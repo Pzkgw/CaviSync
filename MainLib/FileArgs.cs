@@ -1,30 +1,43 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace MainLib
 {
-	public delegate void FileEventHandler(object sender, FileEventArgs e);
+    public delegate void FileEventHandler(object sender, FileEventArgs e);
 
-	public class FileEventArgs : EventArgs
-	{
-		/// <summary>
-		/// Gets the virtual path.
-		/// </summary>
-		public string VirtualPath
-		{
-			get { return _VirtualPath; }
-		}
-		string _VirtualPath = null;
+    public class FileEventArgs : EventArgs
+    {
 
-		/// <summary>
-		/// Initializes a new instance of the <see cref="FileEventArgs"/> class.
-		/// </summary>
-		/// <param name="vPath">The v path.</param>
-		public FileEventArgs(string vPath)
-		{
-			this._VirtualPath = vPath;
-		}
-	}
+        double _ExecTime = 0;
+
+        public double ExecTime
+        {
+            get { return _ExecTime; }
+        }
+
+
+        string _VirtualPath = null;
+
+        public string VirtualPath
+        {
+            get { return _VirtualPath; }
+        }
+
+        string _LastWriteTimeUtc = null;
+        /// <summary>
+        /// Gets the time, in coordinated universal time (UTC), 
+        /// when the current file or directory was last written to
+        /// </summary>
+        public string LastWriteTimeUtc
+        {
+            get { return _LastWriteTimeUtc; }
+        }
+
+
+        public FileEventArgs(string vPath, string lastWriteTimeUtc, double execTime)
+        {
+            _VirtualPath = vPath;
+            _LastWriteTimeUtc = lastWriteTimeUtc;
+            _ExecTime = execTime;
+        }
+    }
 }

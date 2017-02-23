@@ -129,13 +129,33 @@ namespace FileServerWinClient
 
 			if (!string.IsNullOrEmpty(dlg.FileName))
 			{
-				string virtualPath = Path.GetFileName(dlg.FileName);
+                string virtualPath = Path.GetFileName(dlg.FileName);
 
-				using (Stream uploadStream = new FileStream(dlg.FileName, FileMode.Open))
+                FileInfo fi = null;
+
+                FileUploadMessage fum = new FileUploadMessage()
+                {
+                    VirtualPath = virtualPath,
+                    LastWriteTimeUtc = DateTime.MaxValue.ToString()
+                };
+
+                if (File.Exists(dlg.FileName))
+                {
+                    fi = new FileInfo(dlg.FileName);
+                    fum.LastWriteTimeUtc = fi.LastWriteTimeUtc.ToString();
+                    fi = null;
+                }
+
+                using (Stream uploadStream = new FileStream(dlg.FileName, FileMode.Open))
 				{
 					using (FileRepositoryServiceClient client = new FileRepositoryServiceClient())
 					{
-						client.PutFile(new FileUploadMessage() { VirtualPath = virtualPath, DataStream = uploadStream });
+                        fum.DataStream = uploadStream;
+
+                        if (client.GetPreUploadCheckResult(fum.VirtualPath))
+                        {
+                            client.PutFile(fum);
+                        }
 					}
 				}
 
