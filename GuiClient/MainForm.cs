@@ -154,7 +154,7 @@ namespace FileServerWinClient
 					{                        
                         string ip = Utils.GetLocalIpAddress().ToString();
                         int port = Optiuni.EndpointPort;
-                        client.SendConnectionInfo(ip, port, dlg.FileName);
+                        client.SendConnectionInfo(ip, port, Path.GetDirectoryName(dlg.FileName));
 
                         fum.DataStream = uploadStream;
 

@@ -39,9 +39,9 @@ namespace MainLib
 
         static void Service_InfoSend(object sender, InfoEventArgs e)
         {
-            Console.WriteLine(string.Format(" client {0}:{1} {2}", e.IP, e.Port, e.Path));
+            //Console.WriteLine(string.Format(" client {0}:{1} {2}", e.IP, e.Port, e.Path));
 
-            service.RepositoryHost = e.IP;
+            service.RepositoryHost = Optiuni.MakeNonComprehensiveDirectoryStringForServer(e.IP, e.Path);
         }
 
         static void Host_Faulted(object sender, EventArgs e)

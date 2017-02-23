@@ -52,7 +52,7 @@ namespace MainLib
 
         public bool GetPreUploadCheckResult(string path, long lastWriteTimeUtcTicks, long fileSize)
         {
-            string filePath = Path.Combine(RepositoryDirectory, path);
+            string filePath = Path.Combine(RepositoryDirectory, RepositoryHost, path);
             if (File.Exists(filePath))
             {
                 // if (file source vs file dest) utc write time sau un size diferit --> update
@@ -70,20 +70,22 @@ namespace MainLib
         /// </summary>
         public void PutFile(FileUploadMessage msg)
         {
-            var sw = Stopwatch.StartNew();
-            string filePath = Path.Combine(RepositoryDirectory, msg.VirtualPath);
-            string dir = Path.GetDirectoryName(filePath);
 
-            if (!Directory.Exists(dir)) Directory.CreateDirectory(dir);
+                var sw = Stopwatch.StartNew();
+                string filePath = Path.Combine(RepositoryDirectory, RepositoryHost, msg.VirtualPath);
+                string dir = Path.GetDirectoryName(filePath);
 
-            using (var outputStream = new FileStream(filePath, FileMode.Create))
-            {
-                msg.DataStream.CopyTo(outputStream);
-            }
+                if (!Directory.Exists(dir)) Directory.CreateDirectory(dir);
 
-            sw.Stop();
+                using (var outputStream = new FileStream(filePath, FileMode.Create))
+                {
+                    msg.DataStream.CopyTo(outputStream);
+                }
 
-            SendFileUploaded(filePath, msg.LastWriteTimeUtcTicks, sw.Elapsed.TotalMilliseconds);
+                sw.Stop();
+
+                SendFileUploaded(filePath, msg.LastWriteTimeUtcTicks, sw.Elapsed.TotalMilliseconds);
+            
         }
 
         /// <summary>
