@@ -14,8 +14,8 @@ namespace MainLib
 		[OperationContract]
 		Stream GetFile(string virtualPath);
 
-        [OperationContract]
-        bool GetPreUploadCheckResult(string path);
+        [OperationContract] // check daca fisierul sursa s-a modificat si e necesar un update
+        bool GetPreUploadCheckResult(string path, long lastWriteTimeUtcTicks, long fileSize);
 
         [OperationContract]
 		void PutFile(FileUploadMessage msg);

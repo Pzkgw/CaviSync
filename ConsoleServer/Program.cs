@@ -48,14 +48,16 @@ namespace MainLib
 
         static void Service_FileUploaded(object sender, FileEventArgs e)
         {
-            Console.WriteLine(string.Format("{2} Upload  {0}  {1}", e.VirtualPath, e.LastWriteTimeUtc, e.ExecTime));
+            Console.WriteLine(string.Format("{2} Upload  {0}  {1}", e.VirtualPath, new DateTime(e.LastWriteTimeUtcTicks, DateTimeKind.Utc), e.ExecTime));
 
-            FileInfo fi = new FileInfo(e.VirtualPath);
+            // update destination file modification date with value from the source file 
+            string path = e.VirtualPath;
+            FileInfo fi = null;
 
-            if (fi != null)
+            if (File.Exists(path) && e.LastWriteTimeUtcTicks>0)
             {
-                DateTime dt = DateTime.MaxValue;
-                DateTime.TryParse(e.LastWriteTimeUtc, out dt);
+                fi = new FileInfo(path);
+                DateTime dt = new DateTime(e.LastWriteTimeUtcTicks, DateTimeKind.Utc);
                 if (dt != DateTime.MaxValue)
                 {
                     fi.LastWriteTime = dt;

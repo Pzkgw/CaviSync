@@ -10,7 +10,7 @@ namespace MainLib
 		public string VirtualPath { get; set; }
 
         [MessageHeader(MustUnderstand = true)]
-        public string LastWriteTimeUtc { get; set; }
+        public long LastWriteTimeUtcTicks { get; set; }
 
         [MessageBodyMember(Order=1)]
 		public Stream DataStream { get; set; }

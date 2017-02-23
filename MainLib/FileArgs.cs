@@ -22,21 +22,21 @@ namespace MainLib
             get { return _VirtualPath; }
         }
 
-        string _LastWriteTimeUtc = null;
+        long _LastWriteTimeUtcTicks = 0;
         /// <summary>
         /// Gets the time, in coordinated universal time (UTC), 
         /// when the current file or directory was last written to
         /// </summary>
-        public string LastWriteTimeUtc
+        public long LastWriteTimeUtcTicks
         {
-            get { return _LastWriteTimeUtc; }
+            get { return _LastWriteTimeUtcTicks; }
         }
 
 
-        public FileEventArgs(string vPath, string lastWriteTimeUtc, double execTime)
+        public FileEventArgs(string vPath, long lastWriteTimeUtcTicks, double execTime)
         {
             _VirtualPath = vPath;
-            _LastWriteTimeUtc = lastWriteTimeUtc;
+            _LastWriteTimeUtcTicks = lastWriteTimeUtcTicks;
             _ExecTime = execTime;
         }
     }

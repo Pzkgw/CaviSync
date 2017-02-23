@@ -18,9 +18,9 @@ namespace FileServerWinClient
             return base.Channel.GetFile(virtualPath);
         }
 
-        public bool GetPreUploadCheckResult(string msg)
+        public bool GetPreUploadCheckResult(string path, long lastWriteTimeUtcTicks, long fileSize)
         {
-            return base.Channel.GetPreUploadCheckResult(msg);
+            return base.Channel.GetPreUploadCheckResult(path, lastWriteTimeUtcTicks, fileSize);
         }
 
         public void PutFile(FileUploadMessage msg)

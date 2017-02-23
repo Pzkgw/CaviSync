@@ -44,19 +44,16 @@ namespace MainLib
             return new FileStream(filePath, FileMode.Open, FileAccess.Read);
         }
 
-        public bool GetPreUploadCheckResult(string path)
+        public bool GetPreUploadCheckResult(string path, long lastWriteTimeUtcTicks, long fileSize)
         {
             string filePath = Path.Combine(RepositoryDirectory, path);
             if (File.Exists(filePath))
             {
-                // fisierul are un utc write time
-                // sau un size diferit --> update
+                // if (file source vs file dest) utc write time sau un size diferit --> update
                 FileInfo fi = new FileInfo(filePath);
 
-                if (fi != null)
-                {
-
-                }
+                if (fi != null && fi.LastWriteTimeUtc.Ticks == lastWriteTimeUtcTicks && fi.Length == fileSize)
+                    return false;
 
             }
             return true;
@@ -80,7 +77,7 @@ namespace MainLib
 
             sw.Stop();
 
-            SendFileUploaded(filePath, msg.LastWriteTimeUtc, sw.Elapsed.TotalMilliseconds);
+            SendFileUploaded(filePath, msg.LastWriteTimeUtcTicks, sw.Elapsed.TotalMilliseconds);
         }
 
         /// <summary>
@@ -140,30 +137,30 @@ namespace MainLib
         #region Events
 
         /// <summary>
-        /// Raises the FileRequested event.
+        /// Raises the FileRequested event
         /// </summary>
         protected void SendFileRequested(string vPath)
         {
             if (FileRequested != null)
-                FileRequested(this, new FileEventArgs(vPath, null, 0));
+                FileRequested(this, new FileEventArgs(vPath, 0, 0));
         }
 
         /// <summary>
         /// Raises the FileUploaded event
         /// </summary>
-        protected void SendFileUploaded(string vPath, string lwt, double time)
+        protected void SendFileUploaded(string vPath, long LastWriteTimeUtcTicks, double time)
         {
             if (FileUploaded != null)
-                FileUploaded(this, new FileEventArgs(vPath, lwt, time));
+                FileUploaded(this, new FileEventArgs(vPath, LastWriteTimeUtcTicks, time));
         }
 
         /// <summary>
-        /// Raises the FileDeleted event.
+        /// Raises the FileDeleted event
         /// </summary>
         protected void SendFileDeleted(string vPath)
         {
             if (FileDeleted != null)
-                FileDeleted(this, new FileEventArgs(vPath, null, 0));
+                FileDeleted(this, new FileEventArgs(vPath, 0, 0));
         }
 
         #endregion

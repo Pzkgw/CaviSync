@@ -132,17 +132,19 @@ namespace FileServerWinClient
                 string virtualPath = Path.GetFileName(dlg.FileName);
 
                 FileInfo fi = null;
+                long fileSize = 0;
 
                 FileUploadMessage fum = new FileUploadMessage()
                 {
                     VirtualPath = virtualPath,
-                    LastWriteTimeUtc = DateTime.MaxValue.ToString()
+                    LastWriteTimeUtcTicks = 0
                 };
 
                 if (File.Exists(dlg.FileName))
                 {
                     fi = new FileInfo(dlg.FileName);
-                    fum.LastWriteTimeUtc = fi.LastWriteTimeUtc.ToString();
+                    fum.LastWriteTimeUtcTicks = fi.LastWriteTimeUtc.Ticks;
+                    fileSize = fi.Length;
                     fi = null;
                 }
 
@@ -152,7 +154,7 @@ namespace FileServerWinClient
 					{
                         fum.DataStream = uploadStream;
 
-                        if (client.GetPreUploadCheckResult(fum.VirtualPath))
+                        if (client.GetPreUploadCheckResult(fum.VirtualPath, fum.LastWriteTimeUtcTicks, fileSize))
                         {
                             client.PutFile(fum);
                         }
