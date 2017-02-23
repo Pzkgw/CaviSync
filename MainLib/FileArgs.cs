@@ -4,31 +4,17 @@ namespace MainLib
 {
     public delegate void FileEventHandler(object sender, FileEventArgs e);
     public delegate void InfoSendEventHandler(object sender, InfoEventArgs e);
-    public delegate void ClientDirectorySendEventHandler(object sender, ClientDirectorySendEventArgs e);
-
-    public class ClientDirectorySendEventArgs : EventArgs
-    {
-        string _dir;
-        public ClientDirectorySendEventArgs(string dir)
-        {
-            _dir = dir;
-        }
-
-        public string Path
-        {
-            get { return _dir; }
-        }
-
-    }
 
     public class InfoEventArgs : EventArgs
     {
         string _ip;
         int _port;
-        public InfoEventArgs(string ip, int port)
+        string _dir;
+        public InfoEventArgs(string ip, int port, string dir)
         {
             _ip = ip;
             _port = port;
+            _dir = dir;
         }
 
         public string IP
@@ -40,6 +26,11 @@ namespace MainLib
         public int Port
         {
             get { return _port; }
+        }
+
+        public string Path
+        {
+            get { return _dir; }
         }
     }
 

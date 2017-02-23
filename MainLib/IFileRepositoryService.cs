@@ -27,10 +27,7 @@ namespace MainLib
 		StorageFileInfo[] List(string virtualPath);
 
         [OperationContract]
-        void SendConnectionInfo(string ip, int port);
-
-        [OperationContract]
-        void SendSyncDirectory(string path);
+        void SendConnectionInfo(string ip, int port, string path);
 
     }
 }

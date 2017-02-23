@@ -20,7 +20,6 @@ namespace MainLib
         public event FileEventHandler FileUploaded;
         public event FileEventHandler FileDeleted;
         public event InfoSendEventHandler InfoSend;
-        public event ClientDirectorySendEventHandler ClientDirectorySendUp;
 
         #endregion
 
@@ -30,6 +29,11 @@ namespace MainLib
         /// Gets or sets the repository directory.
         /// </summary>
         public string RepositoryDirectory { get; set; }
+
+        /// <summary>
+        /// Gets or sets the repository directory.
+        /// </summary>
+        public string RepositoryHost { get; set; }
 
         /// <summary>
         /// Gets a file from the repository
@@ -121,17 +125,12 @@ namespace MainLib
         }
 
          
-        public void SendConnectionInfo(string ip, int port)
+        public void SendConnectionInfo(string ip, int port, string path)
         {
             //IPAddress ipAddress = Utils.GetLocalIpAddress();
             //ip = (ipAddress != null) ? ipAddress.ToString() : null;
             //port = Optiuni.EndpointPort;
-            SendConnectionInfoEventUpdate(ip, port);
-        }
-
-        public void SendSyncDirectory(string path)
-        {
-            SendSyncDirectoryInfo(path);
+            SendConnectionInfoEventUpdate(ip, port, path);
         }
 
         #endregion
@@ -166,18 +165,12 @@ namespace MainLib
         }
 
 
-        protected void SendConnectionInfoEventUpdate(string ip, int port)
+        protected void SendConnectionInfoEventUpdate(string ip, int port, string path)
         {
             if (InfoSend != null)
-                InfoSend(this, new InfoEventArgs(ip, port));
+                InfoSend(this, new InfoEventArgs(ip, port, path));
         }
 
-
-        protected void SendSyncDirectoryInfo(string path)
-        {
-            if (ClientDirectorySendUp != null)
-                ClientDirectorySendUp(this, new ClientDirectorySendEventArgs(path));
-        }
 
         #endregion
     }

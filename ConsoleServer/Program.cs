@@ -15,8 +15,7 @@ namespace MainLib
             service = new FileRepositoryService();
             service.RepositoryDirectory = "Depozit";
 
-            service.InfoSend += new InfoSendEventHandler(Service_InfoSend);
-            service.ClientDirectorySendUp += Service_ClientDirectorySendUp;
+            service.InfoSend += new InfoSendEventHandler(Service_InfoSend);  
 
             service.FileRequested += new FileEventHandler(Service_FileRequested);
             service.FileUploaded += new FileEventHandler(Service_FileUploaded);
@@ -37,14 +36,12 @@ namespace MainLib
             }
         }
 
-        private static void Service_ClientDirectorySendUp(object sender, ClientDirectorySendEventArgs e)
-        {
-            Console.WriteLine(string.Format(" ... client Sync Directory: {0}", e.Path));
-        }
 
         static void Service_InfoSend(object sender, InfoEventArgs e)
         {
-            Console.WriteLine(string.Format(" ... client IP: {0}  Port: {1}", e.IP, e.Port));
+            Console.WriteLine(string.Format(" client {0}:{1} {2}", e.IP, e.Port, e.Path));
+
+            service.RepositoryHost = e.IP;
         }
 
         static void Host_Faulted(object sender, EventArgs e)

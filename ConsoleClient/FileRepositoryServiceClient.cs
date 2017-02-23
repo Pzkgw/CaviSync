@@ -56,14 +56,9 @@ namespace ConsoleClient
             return base.Channel.List(virtualPath);
         }
 
-        public void SendConnectionInfo(string ip, int port)
+        public void SendConnectionInfo(string ip, int port, string path)
         {
-            base.Channel.SendConnectionInfo(ip, port);
-        }
-
-        public void SendSyncDirectory(string path)
-        {
-            base.Channel.SendSyncDirectory(path);
+            base.Channel.SendConnectionInfo(ip, port, path);
         }
 
         #endregion
