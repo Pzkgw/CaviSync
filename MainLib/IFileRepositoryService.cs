@@ -17,16 +17,16 @@ namespace MainLib
         [OperationContract] // check daca fisierul sursa s-a modificat si e necesar un update
         bool GetPreUploadCheckResult(string path, long lastWriteTimeUtcTicks, long fileSize);
 
-        [OperationContract]
+        [OperationContract(IsOneWay = true)]
 		void PutFile(FileUploadMessage msg);
 
-		[OperationContract]
+		[OperationContract(IsOneWay = true)]
 		void DeleteFile(string virtualPath);
 
 		[OperationContract]
 		StorageFileInfo[] List(string virtualPath);
 
-        [OperationContract]
+        [OperationContract (IsOneWay = true)]
         void SendConnectionInfo(string ip, int port, string path);
 
     }

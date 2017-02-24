@@ -7,8 +7,8 @@ namespace ConsoleClient
     public class FileRepositoryServiceClient : ClientBase<IFileRepositoryService>, IFileRepositoryService, IDisposable
     {
         public FileRepositoryServiceClient() : base("FileRepositoryService")
-        {            
-           
+        {
+
         }
         public void SetEndpointAddress(string s)
         {
@@ -24,11 +24,19 @@ namespace ConsoleClient
 
         public bool GetPreUploadCheckResult(string path, long lastWriteTimeUtcTicks, long fileSize)
         {
-            return base.Channel.GetPreUploadCheckResult(path, lastWriteTimeUtcTicks, fileSize);
+            try
+            {
+                return base.Channel.GetPreUploadCheckResult(path, lastWriteTimeUtcTicks, fileSize);
+            }
+            catch (Exception) // alte exceptii, nu doar EndpointNotFoundException ---> simple return false
+            {
+            }
+            return false;
         }
 
         public void PutFile(FileUploadMessage msg)
         {
+            // pre-PutFile : SendConnectionInfo, GetPreUploadCheckResult
             try
             {
                 base.Channel.PutFile(msg);
@@ -45,11 +53,6 @@ namespace ConsoleClient
             base.Channel.DeleteFile(virtualPath);
         }
 
-        //public StorageFileInfo[] List()
-        //{
-        //    return List(null);
-        //}
-
         public StorageFileInfo[] List(string virtualPath)
         {
             return base.Channel.List(virtualPath);
@@ -57,7 +60,13 @@ namespace ConsoleClient
 
         public void SendConnectionInfo(string ip, int port, string path)
         {
-            base.Channel.SendConnectionInfo(ip, port, path);
+            try
+            {
+                base.Channel.SendConnectionInfo(ip, port, path);
+            }
+            catch (EndpointNotFoundException)
+            {
+            }
         }
 
         #endregion
