@@ -10,10 +10,9 @@ namespace ConsoleClient
         {            
            
         }
-
-        public void SetEndpointAddress()
+        public void SetEndpointAddress(string s)
         {
-            Endpoint.Address = new EndpointAddress(Optiuni.GetEndpointAddress());
+            Endpoint.Address = new EndpointAddress(s);
         }
 
         #region IFileRepositoryService Members

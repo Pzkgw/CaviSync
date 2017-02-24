@@ -13,7 +13,7 @@ namespace MainLib
         {
 
             service = new FileRepositoryService();
-            service.RepositoryDirectory = "Depozit";
+            service.RepositoryDirectory = Optiuni.dirServer;
 
             service.InfoSend += new InfoSendEventHandler(Service_InfoSend);  
 

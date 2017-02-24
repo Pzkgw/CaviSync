@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Net;
 using System.Timers;
 using MainLib;
 
@@ -29,7 +30,15 @@ namespace ConsoleClient
 
         private void Initialize()
         {
-            
+
+        }
+
+
+        private void StartSyncOnce()
+        {
+            SyncExec();
+
+            Console.ReadKey();
         }
 
         private void StartSyncTimed()
@@ -42,44 +51,53 @@ namespace ConsoleClient
             Console.ReadKey();
         }
 
-        private void StartSyncOnce()
-        {
-            SyncExec();
-
-            Console.ReadKey();
-        }
 
         private void SyncExec()
         {
-            List<string> filesClient =
-            Utils.GetDirectoryFileList(Optiuni.dirClient, "___", excludeFileExtensions);
-
-            foreach (string s in filesClient)
+            IPAddress localIP = Utils.GetLocalIpAddress();
+            string localIP_string = (localIP == null) ? null : localIP.ToString();
+            // init conexiune cu serverul
+            using (FileRepositoryServiceClient client = new FileRepositoryServiceClient())
             {
-                FileInfo f = new FileInfo(s);
-                //Console.WriteLine(f.FullName);
+                // Trebuie setat exact dupa constructorul FileRepositoryServiceClient
+                client.SetEndpointAddress(Optiuni.GetEndpointAddress());
+                client.SendConnectionInfo(localIP_string, Optiuni.EndpointPort, Optiuni.dirClient);
 
-                bool isl = Utils.IsFileLocked(f);
-                //Console.WriteLine(isl.ToString());
 
-                if (!string.IsNullOrEmpty(f.FullName) && !isl)
+                // foreach file in client directory ---> send it
+                foreach (string s in Utils.GetDirectoryFileList(Optiuni.dirClient, "___", excludeFileExtensions))
                 {
-                    string virtualPath = f.FullName.Substring(Optiuni.dirClient.Length + 1); // Path.GetFileName(f.FullName);
+                    FileInfo fi = new FileInfo(s);
+                    long fileSize = 0;
 
-                    using (Stream uploadStream = new FileStream(f.FullName, FileMode.Open))
+                    if (!Utils.IsFileLocked(fi))
                     {
-                        using (FileRepositoryServiceClient client = new FileRepositoryServiceClient())
+                        fileSize = fi.Length;
+
+                        FileUploadMessage fum = new FileUploadMessage()
                         {
-                            client.SetEndpointAddress();
-                            client.PutFile(new FileUploadMessage() { VirtualPath = virtualPath, DataStream = uploadStream });
+                            VirtualPath = s.Substring(Optiuni.dirClient.Length + 1, s.Length - Optiuni.dirClient.Length - 1),
+                            LastWriteTimeUtcTicks = fi.LastWriteTimeUtc.Ticks
+                        };
+
+                        fi = null;
+
+                        using (Stream uploadStream = new FileStream(s, FileMode.Open))
+                        {
+
+                            fum.DataStream = uploadStream;
+
+                            if (client.GetPreUploadCheckResult(fum.VirtualPath, fum.LastWriteTimeUtcTicks, fileSize))
+                            {
+                                client.PutFile(fum);
+                            }
+
                         }
                     }
 
                 }
 
             }
-
-            //RefreshFileList();
 
         }
 
@@ -95,7 +113,7 @@ namespace ConsoleClient
 
             using (FileRepositoryServiceClient client = new FileRepositoryServiceClient())
             {
-                client.SetEndpointAddress();
+                client.SetEndpointAddress(Optiuni.GetEndpointAddress());
                 files = client.List(null);
             }
 

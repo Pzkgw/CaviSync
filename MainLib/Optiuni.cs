@@ -10,7 +10,9 @@ namespace MainLib
         public const string EndpointType = "net.tcp";
         public static IPAddress EndpointIP = IPAddress.Parse("10.10.10.15");
 
-        public static string dirClient = @"C:\Users\bogdan.visoiu\Desktop\doc";
+        public static string
+            dirClient = @"C:\Users\bogdan.visoiu\Desktop\doc",
+            dirServer = "Depozit";
 
         public static string GetEndpointAddress()
         {

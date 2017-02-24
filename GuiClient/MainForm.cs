@@ -45,7 +45,7 @@ namespace FileServerWinClient
 
 			int width = FileList.ClientSize.Width - SystemInformation.VerticalScrollBarWidth;
 
-			float[] widths = { .2f, .6f, .2f };
+			float[] widths = { .2f, .7f, .1f };
 
 			for (int i = 0; i < widths.Length; i++)
 				FileList.Columns[i].Width = (int)((float)width * widths[i]);
