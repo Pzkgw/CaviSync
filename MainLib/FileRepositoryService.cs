@@ -91,22 +91,33 @@ namespace MainLib
         /// </summary>
         public void PutFile(FileUploadMessage msg)
         {
+            //var sw = Stopwatch.StartNew();
 
-            var sw = Stopwatch.StartNew();
-            string filePath = Path.Combine(RepositoryDirectory, RepositoryHost, msg.VirtualPath);
-            string dir = Path.GetDirectoryName(filePath);
-
-            if (!Directory.Exists(dir)) Directory.CreateDirectory(dir);
-
-            using (var outputStream = new FileStream(filePath, FileMode.Create))
+            try
             {
-                msg.DataStream.CopyTo(outputStream);
+                string filePath = Path.Combine(RepositoryDirectory, RepositoryHost, msg.VirtualPath);
+
+                {
+                    string dir = Path.GetDirectoryName(filePath);
+
+                    if (!Directory.Exists(dir)) Directory.CreateDirectory(dir);
+                }
+
+
+                using (var outputStream = new FileStream(filePath, FileMode.Create))
+                {
+                    msg.DataStream.CopyTo(outputStream);
+                }
+
+
+                //sw.Stop();
+
+                SendFileUploaded(filePath, msg.LastWriteTimeUtcTicks, 0);//sw.Elapsed.TotalMilliseconds);
             }
-
-            sw.Stop();
-
-            SendFileUploaded(filePath, msg.LastWriteTimeUtcTicks, sw.Elapsed.TotalMilliseconds);
-
+            catch(Exception)
+            {
+                //
+            }
         }
 
         /// <summary>

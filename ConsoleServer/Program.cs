@@ -42,7 +42,14 @@ namespace MainLib
             }
             finally
             {
-                host.Close();
+                if (host.State == CommunicationState.Faulted)
+                {
+                    host.Abort();
+                }
+                else
+                {
+                    host.Close();
+                }
             }
         }
 
@@ -67,7 +74,7 @@ namespace MainLib
 
         static void Service_FileUploaded(object sender, FileEventArgs e)
         {
-            Console.WriteLine(string.Format("{2} Upload  {0}  {1}", e.VirtualPath, new DateTime(e.LastWriteTimeUtcTicks, DateTimeKind.Utc), e.ExecTime));
+            Console.WriteLine(string.Format("Upload  {0}  {1}", e.VirtualPath, new DateTime(e.LastWriteTimeUtcTicks, DateTimeKind.Utc), e.ExecTime));
 
             // update destination file modification date with value from the source file 
             string path = e.VirtualPath;

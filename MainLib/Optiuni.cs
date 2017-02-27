@@ -12,9 +12,9 @@ namespace MainLib
 
         public static string
             dirClient =
-            @"c:\___\",
-            //@"C:\Users\bogdan.visoiu\Desktop\doc",
-            dirServer = "Depozit";
+            //@"c:\___\",
+            @"C:\Users\bogdan.visoiu\Desktop\doc",
+            dirServer = @"c:\Depozit";
 
         public static string GetDirClient()
         {

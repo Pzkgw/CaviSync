@@ -54,57 +54,74 @@ namespace ConsoleClient
 
         private void SyncExec()
         {
-            IPAddress localIP = Utils.GetLocalIpAddress();
-            string localIP_string = (localIP == null) ? null : localIP.ToString();
-
-            string dirClient = Optiuni.GetDirClient();
-
-            // init conexiune cu serverul
-            using (FileRepositoryServiceClient client = new FileRepositoryServiceClient())
+            try
             {
-                // Trebuie setat exact dupa constructorul FileRepositoryServiceClient
-                client.SetEndpointAddress(Optiuni.GetEndpointAddress());
-                client.SendConnectionInfo(localIP_string, Optiuni.EndpointPort, dirClient);
+                IPAddress localIP = Utils.GetLocalIpAddress();
+                string localIP_string = (localIP == null) ? null : localIP.ToString();
 
+                string dirClient = Optiuni.GetDirClient();
 
-                // foreach file in client directory ---> send it
-                foreach (string s in Utils.GetDirectoryFileList(dirClient, "___", excludeFileExtensions))
+                // init conexiune cu serverul
+                using (FileRepositoryServiceClient client = new FileRepositoryServiceClient())
                 {
-                    FileInfo fi = new FileInfo(s);
-                    long fileSize = 0;
+                    // Trebuie setat exact dupa constructorul FileRepositoryServiceClient
+                    client.SetEndpointAddress(Optiuni.GetEndpointAddress());
+                    client.SendConnectionInfo(localIP_string, Optiuni.EndpointPort, dirClient);
 
-                    if (!Utils.IsFileLocked(fi))
+
+                    // foreach file in client directory ---> send it
+                    foreach (string s in Utils.GetDirectoryFileList(dirClient, "___", excludeFileExtensions))
                     {
-                        fileSize = fi.Length;
+                        FileInfo fi = new FileInfo(s);
+                        long fileSize = 0;
 
-                        FileUploadMessage fum = new FileUploadMessage()
+                        if (!Utils.IsFileLocked(fi))
                         {
-                            VirtualPath = s.Substring(dirClient.Length + 1, s.Length - dirClient.Length - 1),
-                            LastWriteTimeUtcTicks = fi.LastWriteTimeUtc.Ticks
-                        };
+                            fileSize = fi.Length;
 
-                        fi = null;
-
-                        using (Stream uploadStream = new FileStream(s, FileMode.Open))
-                        {
-
-                            fum.DataStream = uploadStream;
-
-                            if (client.GetPreUploadCheckResult(
-                                localIP_string,
-                                dirClient,
-                                fum.VirtualPath,
-                                fum.LastWriteTimeUtcTicks
-                                , fileSize))
+                            FileUploadMessage fum = new FileUploadMessage()
                             {
-                                client.PutFile(fum);
-                            }
+                                VirtualPath = s.Substring(dirClient.Length + 1, s.Length - dirClient.Length - 1),
+                                LastWriteTimeUtcTicks = fi.LastWriteTimeUtc.Ticks
+                            };
 
+                            fi = null;
+
+                            using (Stream uploadStream = new FileStream(s, FileMode.Open))
+                            {
+
+                                fum.DataStream = uploadStream;
+
+                                if (client.GetPreUploadCheckResult(
+                                    localIP_string,
+                                    dirClient,
+                                    fum.VirtualPath,
+                                    fum.LastWriteTimeUtcTicks
+                                    , fileSize))
+                                {
+                                    client.PutFile(fum);
+                                }
+                                else
+                                {
+                                    // ::telnet server
+                                    //Console.WriteLine(
+                                    //    localIP_string +
+                                    //    dirClient+
+                                    //    fum.VirtualPath+
+                                    //    fum.LastWriteTimeUtcTicks.ToString()
+                                    //    );
+                                }
+
+                            }
                         }
+
                     }
 
                 }
-
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
             }
 
         }
