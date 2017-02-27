@@ -22,11 +22,11 @@ namespace ConsoleClient
             return base.Channel.GetFile(virtualPath);
         }
 
-        public bool GetPreUploadCheckResult(string path, long lastWriteTimeUtcTicks, long fileSize)
+        public bool GetPreUploadCheckResult(string clientIP, string directory, string file,  long lastWriteTimeUtcTicks, long fileSize)
         {
             try
             {
-                return base.Channel.GetPreUploadCheckResult(path, lastWriteTimeUtcTicks, fileSize);
+                return base.Channel.GetPreUploadCheckResult(clientIP, directory, file, lastWriteTimeUtcTicks, fileSize);
             }
             catch (Exception) // alte exceptii, nu doar EndpointNotFoundException ---> simple return false
             {

@@ -56,16 +56,19 @@ namespace ConsoleClient
         {
             IPAddress localIP = Utils.GetLocalIpAddress();
             string localIP_string = (localIP == null) ? null : localIP.ToString();
+
+            string dirClient = Optiuni.GetDirClient();
+
             // init conexiune cu serverul
             using (FileRepositoryServiceClient client = new FileRepositoryServiceClient())
             {
                 // Trebuie setat exact dupa constructorul FileRepositoryServiceClient
                 client.SetEndpointAddress(Optiuni.GetEndpointAddress());
-                client.SendConnectionInfo(localIP_string, Optiuni.EndpointPort, Optiuni.dirClient);
+                client.SendConnectionInfo(localIP_string, Optiuni.EndpointPort, dirClient);
 
 
                 // foreach file in client directory ---> send it
-                foreach (string s in Utils.GetDirectoryFileList(Optiuni.dirClient, "___", excludeFileExtensions))
+                foreach (string s in Utils.GetDirectoryFileList(dirClient, "___", excludeFileExtensions))
                 {
                     FileInfo fi = new FileInfo(s);
                     long fileSize = 0;
@@ -76,7 +79,7 @@ namespace ConsoleClient
 
                         FileUploadMessage fum = new FileUploadMessage()
                         {
-                            VirtualPath = s.Substring(Optiuni.dirClient.Length + 1, s.Length - Optiuni.dirClient.Length - 1),
+                            VirtualPath = s.Substring(dirClient.Length + 1, s.Length - dirClient.Length - 1),
                             LastWriteTimeUtcTicks = fi.LastWriteTimeUtc.Ticks
                         };
 
@@ -87,7 +90,12 @@ namespace ConsoleClient
 
                             fum.DataStream = uploadStream;
 
-                            if (client.GetPreUploadCheckResult(fum.VirtualPath, fum.LastWriteTimeUtcTicks, fileSize))
+                            if (client.GetPreUploadCheckResult(
+                                localIP_string,
+                                dirClient,
+                                fum.VirtualPath,
+                                fum.LastWriteTimeUtcTicks
+                                , fileSize))
                             {
                                 client.PutFile(fum);
                             }

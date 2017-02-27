@@ -13,7 +13,7 @@ namespace MainLib
         {
 
             service = new FileRepositoryService();
-            service.RepositoryDirectory = Optiuni.dirServer;
+            service.RepositoryDirectory = Optiuni.GetDirServer();
 
             service.InfoSend += new InfoSendEventHandler(Service_InfoSend);  
 
@@ -21,7 +21,7 @@ namespace MainLib
             service.FileUploaded += new FileEventHandler(Service_FileUploaded);
             service.FileDeleted += new FileEventHandler(Service_FileDeleted);
 
-            host = new ServiceHost(service);
+            host = new ServiceHost(service); // typeof(FileRepositoryService),
             host.Faulted += new EventHandler(Host_Faulted);
 
             try
@@ -29,6 +29,16 @@ namespace MainLib
                 host.Open();
                 Console.WriteLine("Press a key to close the service");
                 Console.ReadKey();
+            }
+            catch (TimeoutException timeProblem)
+            {
+                Console.WriteLine(timeProblem.Message);
+                Console.ReadLine();
+            }
+            catch (CommunicationException commProblem)
+            {
+                Console.WriteLine(commProblem.Message);
+                Console.ReadLine();
             }
             finally
             {

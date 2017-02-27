@@ -158,7 +158,8 @@ namespace FileServerWinClient
 
                         fum.DataStream = uploadStream;
 
-                        if (client.GetPreUploadCheckResult(fum.VirtualPath, fum.LastWriteTimeUtcTicks, fileSize))
+                        if (client.GetPreUploadCheckResult(Utils.GetLocalIpAddress().ToString(),
+                            Optiuni.GetDirClient(), fum.VirtualPath, fum.LastWriteTimeUtcTicks, fileSize))
                         {
                             client.PutFile(fum);
                         }

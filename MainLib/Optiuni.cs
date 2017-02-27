@@ -11,8 +11,20 @@ namespace MainLib
         public static IPAddress EndpointIP = IPAddress.Parse("10.10.10.15");
 
         public static string
-            dirClient = @"C:\Users\bogdan.visoiu\Desktop\doc",
+            dirClient =
+            @"c:\___\",
+            //@"C:\Users\bogdan.visoiu\Desktop\doc",
             dirServer = "Depozit";
+
+        public static string GetDirClient()
+        {
+            return dirClient.EndsWith("\\") ? dirClient.Substring(0, dirClient.Length - 1) : dirClient;
+        }
+
+        public static string GetDirServer()
+        {
+            return dirServer;
+        }
 
         public static string GetEndpointAddress()
         {

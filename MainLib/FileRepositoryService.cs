@@ -23,6 +23,7 @@ namespace MainLib
 
         #endregion
 
+
         #region IFileRepositoryService Members
 
         /// <summary>
@@ -50,9 +51,29 @@ namespace MainLib
             return new FileStream(filePath, FileMode.Open, FileAccess.Read);
         }
 
-        public bool GetPreUploadCheckResult(string path, long lastWriteTimeUtcTicks, long fileSize)
+        public bool GetPreUploadCheckResult(
+            string clientIP, string directory, string file,
+            long lastWriteTimeUtcTicks, long fileSize)
         {
-            string filePath = Path.Combine(RepositoryDirectory, RepositoryHost, path);
+            // verificari daca e clientul dorit
+            //Console.WriteLine(RepositoryHost.Contains(clientIP));
+            if (!RepositoryHost.Contains(clientIP)) return false;
+
+            {
+                int
+                    yy1 = RepositoryHost.LastIndexOf('@') + 1,
+                    yy2 = directory.LastIndexOf('\\') + 1;
+
+                //Console.WriteLine(RepositoryHost.Substring(yy1, RepositoryHost.Length - yy1));
+                //Console.WriteLine(directory.Substring(yy2, directory.Length - yy2));
+                if (!RepositoryHost.Substring(yy1, RepositoryHost.Length - yy1).Equals(directory.Substring(yy2, directory.Length - yy2))) return false;
+            }
+
+            // fisierul exista deja -> verific daca necesita update
+            string filePath = Path.Combine(RepositoryDirectory, RepositoryHost, file);
+
+            //Console.WriteLine("==>" + RepositoryHost + "|||" + directory);
+
             if (File.Exists(filePath))
             {
                 // if (file source vs file dest) utc write time sau un size diferit --> update
@@ -71,21 +92,21 @@ namespace MainLib
         public void PutFile(FileUploadMessage msg)
         {
 
-                var sw = Stopwatch.StartNew();
-                string filePath = Path.Combine(RepositoryDirectory, RepositoryHost, msg.VirtualPath);
-                string dir = Path.GetDirectoryName(filePath);
+            var sw = Stopwatch.StartNew();
+            string filePath = Path.Combine(RepositoryDirectory, RepositoryHost, msg.VirtualPath);
+            string dir = Path.GetDirectoryName(filePath);
 
-                if (!Directory.Exists(dir)) Directory.CreateDirectory(dir);
+            if (!Directory.Exists(dir)) Directory.CreateDirectory(dir);
 
-                using (var outputStream = new FileStream(filePath, FileMode.Create))
-                {
-                    msg.DataStream.CopyTo(outputStream);
-                }
+            using (var outputStream = new FileStream(filePath, FileMode.Create))
+            {
+                msg.DataStream.CopyTo(outputStream);
+            }
 
-                sw.Stop();
+            sw.Stop();
 
-                SendFileUploaded(filePath, msg.LastWriteTimeUtcTicks, sw.Elapsed.TotalMilliseconds);
-            
+            SendFileUploaded(filePath, msg.LastWriteTimeUtcTicks, sw.Elapsed.TotalMilliseconds);
+
         }
 
         /// <summary>
@@ -126,7 +147,7 @@ namespace MainLib
                     }).ToArray();
         }
 
-         
+
         public void SendConnectionInfo(string ip, int port, string path)
         {
             //IPAddress ipAddress = Utils.GetLocalIpAddress();
