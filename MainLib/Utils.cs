@@ -28,7 +28,7 @@ namespace MainLib
 
             List<string> result = new List<string>();
             Stack<string> stack = new Stack<string>();
-            stack.Push(directory);
+            stack.Push(directory+'\\');
 
             while (stack.Count > 0)
             {

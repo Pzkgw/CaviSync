@@ -15,7 +15,7 @@ namespace MainLib
             service = new FileRepositoryService();
             service.RepositoryDirectory = Optiuni.GetDirServer();
 
-            service.InfoSend += new InfoSendEventHandler(Service_InfoSend);  
+            service.InfoSend += new InfoSendEventHandler(Service_InfoSend);
 
             service.FileRequested += new FileEventHandler(Service_FileRequested);
             service.FileUploaded += new FileEventHandler(Service_FileUploaded);
@@ -74,21 +74,27 @@ namespace MainLib
 
         static void Service_FileUploaded(object sender, FileEventArgs e)
         {
-            Console.WriteLine(string.Format("Upload  {0}  {1}", e.VirtualPath, new DateTime(e.LastWriteTimeUtcTicks, DateTimeKind.Utc), e.ExecTime));
+            Console.WriteLine(string.Format("Upload  {0}  {1}", e.VirtualPath, new DateTime(e.LastWriteTimeUtcTicks, DateTimeKind.Utc))); // , e.ExecTime
 
             // update destination file modification date with value from the source file 
             string path = e.VirtualPath;
             FileInfo fi = null;
 
-            if (File.Exists(path) && e.LastWriteTimeUtcTicks>0)
+            try
             {
-                fi = new FileInfo(path);
-                DateTime dt = new DateTime(e.LastWriteTimeUtcTicks, DateTimeKind.Utc);
-                if (dt != DateTime.MaxValue)
+                if (File.Exists(path) && e.LastWriteTimeUtcTicks > 0)
                 {
+                    fi = new FileInfo(path);
+                    DateTime dt = new DateTime(e.LastWriteTimeUtcTicks, DateTimeKind.Utc);
                     fi.LastWriteTime = dt;
                     fi.LastWriteTimeUtc = dt;
+
+                    //Console.WriteLine("GATA"+fi.LastWriteTime.ToString());
                 }
+            }
+            catch (Exception)
+            {
+                //Console.WriteLine("--EXEC "+ex.ToString());
             }
         }
 

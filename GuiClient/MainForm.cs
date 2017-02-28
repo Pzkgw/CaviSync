@@ -131,6 +131,8 @@ namespace FileServerWinClient
 			{
                 string virtualPath = Path.GetFileName(dlg.FileName);
 
+                Optiuni.dirClient = Path.GetDirectoryName(dlg.FileName);
+
                 FileInfo fi = null;
                 long fileSize = 0;
 
@@ -158,7 +160,7 @@ namespace FileServerWinClient
 
                         fum.DataStream = uploadStream;
 
-                        if (client.GetPreUploadCheckResult(Utils.GetLocalIpAddress().ToString(),
+                        if (client.GetPreUploadCheckResult(ip,
                             Optiuni.GetDirClient(), fum.VirtualPath, fum.LastWriteTimeUtcTicks, fileSize))
                         {
                             client.PutFile(fum);

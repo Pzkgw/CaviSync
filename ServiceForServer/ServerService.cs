@@ -84,10 +84,9 @@ namespace ServiceForServer
             tim.Enabled = false;
 
 
-
-
             tim.Enabled = true;
         }
+
 
         protected override void OnStop()
         {
@@ -118,17 +117,32 @@ namespace ServiceForServer
 
             // update destination file modification date with value from the source file 
             string path = e.VirtualPath;
+
             FileInfo fi = null;
 
-            if (File.Exists(path) && e.LastWriteTimeUtcTicks > 0)
+            try
             {
-                fi = new FileInfo(path);
-                DateTime dt = new DateTime(e.LastWriteTimeUtcTicks, DateTimeKind.Utc);
-                if (dt != DateTime.MaxValue)
+                if (File.Exists(path) && e.LastWriteTimeUtcTicks > 0)
                 {
-                    fi.LastWriteTime = dt;
-                    fi.LastWriteTimeUtc = dt;
+                    fi = new FileInfo(path);
+                    if (!Utils.IsFileLocked(fi))
+                    {
+                        DateTime dt = new DateTime(e.LastWriteTimeUtcTicks, DateTimeKind.Utc);
+
+                        fi.LastWriteTime = dt;
+                        fi.LastWriteTimeUtc = dt;
+                        fi = null;
+                    }
+                    
                 }
+            }
+            catch (Exception)
+            {
+
+            }
+            finally
+            {
+                fi = null;
             }
         }
 

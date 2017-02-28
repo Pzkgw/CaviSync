@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Timers;
@@ -51,7 +50,7 @@ namespace ConsoleClient
             Console.ReadKey();
         }
 
-
+        static int tc = 0;
         private void SyncExec()
         {
             try
@@ -100,16 +99,19 @@ namespace ConsoleClient
                                     , fileSize))
                                 {
                                     client.PutFile(fum);
+                                    ++tc;
+                                    Console.WriteLine(string.Format("{0} fisiere copiate pe server ", tc.ToString()));
                                 }
                                 else
                                 {
                                     // ::telnet server
                                     //Console.WriteLine(
-                                    //    localIP_string +
-                                    //    dirClient+
-                                    //    fum.VirtualPath+
-                                    //    fum.LastWriteTimeUtcTicks.ToString()
-                                    //    );
+                                    //    string.Format("ZERO:{0} {1} {2} {3}",
+                                    //    localIP_string,
+                                    //    dirClient,
+                                    //    fum.VirtualPath,
+                                    //    fum.LastWriteTimeUtcTicks
+                                    //    ));
                                 }
 
                             }

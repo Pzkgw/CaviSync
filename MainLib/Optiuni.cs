@@ -1,6 +1,5 @@
-﻿
-using System.Net;
-using System.Text;
+﻿using System.Net;
+
 
 namespace MainLib
 {
@@ -8,13 +7,20 @@ namespace MainLib
     {
         public const int EndpointPort = 5000;
         public const string EndpointType = "net.tcp";
-        public static IPAddress EndpointIP = IPAddress.Parse("10.10.10.15");
+        public static IPAddress EndpointIP = IPAddress.Parse("10.10.10.99");
+
+        public const string
+            regPath = "SOFTWARE\\Wow6432Node\\GTS Global Intelligence",
+            regPathSrv = "CAVI Sync Server",
+            regPathCli = "CAVI Sync Client";
+        
 
         public static string
+            dirServer = @"c:\Depozit",
             dirClient =
-            //@"c:\___\",
-            @"C:\Users\bogdan.visoiu\Desktop\doc",
-            dirServer = @"c:\Depozit";
+            @"c:\___\"
+            //@"C:\Users\bogdan.visoiu\Desktop\doc"
+            ;
 
         public static string GetDirClient()
         {
@@ -23,7 +29,7 @@ namespace MainLib
 
         public static string GetDirServer()
         {
-            return dirServer;
+            return dirServer.EndsWith("\\") ? dirServer.Substring(0, dirServer.Length - 1) : dirServer;
         }
 
         public static string GetEndpointAddress()
@@ -34,7 +40,7 @@ namespace MainLib
         public static string MakeNonComprehensiveDirectoryStringForServer(string ip, string clientDir)
         {
             return string.Format("{0}{1}", ip,
-                clientDir.Replace('\\','@').Replace(':','$'));
+                clientDir.Replace('\\', '@').Replace(':', '$'));
         }
     }
 }

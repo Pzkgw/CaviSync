@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.ServiceModel;
 using System.IO;
-using System.Net;
-using System.Diagnostics;
 
 namespace MainLib
 {
@@ -55,19 +51,34 @@ namespace MainLib
             string clientIP, string directory, string file,
             long lastWriteTimeUtcTicks, long fileSize)
         {
+
+            // daca directorul de sincronizare de pe server a fost schimbat
+            // continuarea verificarilor de fisiere nu mai e necesara
+            if (CheckStorehouseDirectory()) return true;
+
+            if (string.IsNullOrEmpty(RepositoryDirectory)) return false;
+            //Console.WriteLine("_01" + Directory.Exists(RepositoryDirectory).ToString() + RepositoryDirectory);
+            if (!Directory.Exists(RepositoryDirectory)) return true;
+
             // verificari daca e clientul dorit
             //Console.WriteLine(RepositoryHost.Contains(clientIP));
+            //Console.WriteLine("--10 "+DateTime.Now.ToString());
             if (!RepositoryHost.Contains(clientIP)) return false;
-
+            //Console.WriteLine("--11 " + DateTime.Now.ToString());
             {
                 int
                     yy1 = RepositoryHost.LastIndexOf('@') + 1,
                     yy2 = directory.LastIndexOf('\\') + 1;
 
+                //Console.WriteLine(RepositoryHost);
+                //Console.WriteLine(directory);
+
                 //Console.WriteLine(RepositoryHost.Substring(yy1, RepositoryHost.Length - yy1));
                 //Console.WriteLine(directory.Substring(yy2, directory.Length - yy2));
                 if (!RepositoryHost.Substring(yy1, RepositoryHost.Length - yy1).Equals(directory.Substring(yy2, directory.Length - yy2))) return false;
             }
+
+            //Console.WriteLine("--3" + DateTime.Now.ToString());
 
             // fisierul exista deja -> verific daca necesita update
             string filePath = Path.Combine(RepositoryDirectory, RepositoryHost, file);
@@ -80,10 +91,49 @@ namespace MainLib
                 FileInfo fi = new FileInfo(filePath);
 
                 if (fi != null && fi.LastWriteTimeUtc.Ticks == lastWriteTimeUtcTicks && fi.Length == fileSize)
+                {
+                    fi = null;
                     return false;
+                }
 
             }
             return true;
+        }
+
+
+        private bool CheckStorehouseDirectory()
+        {
+            string regVal = null;
+
+            try
+            {
+                regVal = RegEdit.ServerGetPath();
+            }
+            catch(Exception)
+            {
+                //Console.WriteLine("EXC-"+ex.ToString());
+            }
+
+            //Console.WriteLine(string.Format("{0}-{1}", regVal, RepositoryDirectory));
+
+            if (string.IsNullOrEmpty(regVal))
+            {
+                regVal = Optiuni.dirServer;
+                RegEdit.ServerUpdate(regVal);
+            }            
+
+            if (regVal.Contains(RepositoryDirectory))
+            {
+                //Console.WriteLine(string.Format("FALSE {0}-{1}", regVal, DateTime.Now.ToString()));
+                return false;
+            }
+            else
+            {
+                //Console.WriteLine(string.Format("TRUE {0}-{1}", regVal, DateTime.Now.ToString()));
+                Optiuni.dirServer = regVal;
+                RepositoryDirectory = Optiuni.GetDirServer();
+                return true;
+            }
         }
 
         /// <summary>
@@ -92,6 +142,8 @@ namespace MainLib
         public void PutFile(FileUploadMessage msg)
         {
             //var sw = Stopwatch.StartNew();
+
+            FileStream outputStream = null;
 
             try
             {
@@ -104,20 +156,32 @@ namespace MainLib
                 }
 
 
-                using (var outputStream = new FileStream(filePath, FileMode.Create))
-                {
-                    msg.DataStream.CopyTo(outputStream);
-                }
+                outputStream = new FileStream(filePath, FileMode.Create);
 
+                msg.DataStream.CopyTo(outputStream);
 
-                //sw.Stop();
+                outputStream.Close();
+                msg.DataStream.Close();
 
                 SendFileUploaded(filePath, msg.LastWriteTimeUtcTicks, 0);//sw.Elapsed.TotalMilliseconds);
             }
-            catch(Exception)
+            catch (Exception)
             {
                 //
             }
+            finally
+            {
+                if (outputStream != null)
+                {
+                    outputStream.Close();
+                }
+                if (msg.DataStream != null)
+                {
+                    msg.DataStream.Close();
+                }
+            }
+
+            //sw.Stop();
         }
 
         /// <summary>
