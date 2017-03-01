@@ -2,6 +2,7 @@
 using System.Linq;
 using System.ServiceModel;
 using System.IO;
+using System.Reflection;
 
 namespace MainLib
 {
@@ -54,11 +55,29 @@ namespace MainLib
 
             // daca directorul de sincronizare de pe server a fost schimbat
             // continuarea verificarilor de fisiere nu mai e necesara
-            if (CheckStorehouseDirectory()) return true;
+            bool repositoryDirectoryChanged = CheckStorehouseDirectory();
 
-            if (string.IsNullOrEmpty(RepositoryDirectory)) return false;
+
             //Console.WriteLine("_01" + Directory.Exists(RepositoryDirectory).ToString() + RepositoryDirectory);
-            if (!Directory.Exists(RepositoryDirectory)) return true;
+            
+            if (string.IsNullOrEmpty(RepositoryDirectory)) return false;
+
+            if (!Directory.Exists(RepositoryDirectory))
+            {
+                // Return false sunt optionale
+                // Exemplu : 
+                //  - pentru RepositoryDirectory = "K" se creeaza directorul K
+                //    direct in directorul aplicatiei
+                if (RepositoryDirectory.Length < 4) return false; // nu direct pe drive
+
+                if (!RepositoryDirectory.Contains('\\')) return false; // nu direct pe drive
+                
+                if (RepositoryDirectory.Contains(Path.GetDirectoryName( // nu in directorul aplicatiei
+                     Assembly.GetAssembly(typeof(FileRepositoryService)).CodeBase))) return false; 
+                return true;
+            }
+
+            if (repositoryDirectoryChanged) return true;
 
             // verificari daca e clientul dorit
             //Console.WriteLine(RepositoryHost.Contains(clientIP));
@@ -120,9 +139,14 @@ namespace MainLib
             {
                 regVal = Optiuni.dirServer;
                 RegEdit.ServerUpdate(regVal);
-            }            
+            }
 
-            if (regVal.Contains(RepositoryDirectory))
+            if (regVal.Equals(RepositoryDirectory) ||
+                (
+                (regVal.Length == (RepositoryDirectory.Length + 1)) &&
+                (regVal[regVal.Length - 1] == '\\') &&
+                (regVal.Contains(RepositoryDirectory))
+                ))
             {
                 //Console.WriteLine(string.Format("FALSE {0}-{1}", regVal, DateTime.Now.ToString()));
                 return false;

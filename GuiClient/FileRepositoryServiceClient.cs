@@ -29,8 +29,14 @@ namespace FileServerWinClient
 
             // 1. Serverul nu e pornit:
             //TCP error code 10061: No connection could be made because the target machine actively refused it
-
-            base.Channel.PutFile(msg);
+            try
+            {
+                base.Channel.PutFile(msg);
+            }
+            catch(EndpointNotFoundException)
+            {
+                // un mesaj de eroare la conexiune pe aici
+            }
 
         }
 

@@ -100,7 +100,7 @@ namespace ConsoleClient
                                 {
                                     client.PutFile(fum);
                                     ++tc;
-                                    Console.WriteLine(string.Format("{0} fisiere copiate pe server ", tc.ToString()));
+                                    Console.WriteLine(string.Format("{0} fisiere trimise spre server ", tc.ToString()));
                                 }
                                 else
                                 {
