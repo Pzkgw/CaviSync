@@ -26,7 +26,7 @@
 
             <StackPanel HorizontalAlignment="Center">
                 <StackPanel Margin="15" Orientation="Vertical"  HorizontalAlignment="Left">
-                    <Label Content="Server" HorizontalAlignment="Center" FontSize="24" FontFamily="Miriam Fixed" Foreground="{DynamicResource {x:Static SystemColors.MenuBrushKey}}"/>
+                    <Label Content="Client" HorizontalAlignment="Center" FontSize="24" FontFamily="Miriam Fixed" Foreground="{DynamicResource {x:Static SystemColors.MenuBrushKey}}"/>
                     <Label Content=" CAVI synchronization " FontSize="20" FontFamily="Miriam Fixed" Foreground="{DynamicResource {x:Static SystemColors.MenuBrushKey}}" Background="#FF6B6D74"/>
                 </StackPanel>
             </StackPanel>
@@ -37,9 +37,9 @@
 
                 <StackPanel Orientation="Vertical" Margin="15">
                     <StackPanel Orientation="Horizontal">
-                        <Label Content="  IP: " ></Label>
-                        <Label x:Name="labelIp" Content="10.10.10.99" Foreground="{DynamicResource {x:Static SystemColors.InactiveCaptionBrushKey}}" />
-                        <Label Content="  Port: " ></Label>
+                        <Label Content="  IP:" ></Label>
+                        <Label x:Name="labelIp" Content="00.00.00.00" Foreground="{DynamicResource {x:Static SystemColors.InactiveCaptionBrushKey}}" />
+                        <Label Content="  Port:" ></Label>
                         <Label x:Name="labelPort" Content="5000"  Foreground="{DynamicResource {x:Static SystemColors.InactiveCaptionBrushKey}}" />
                     </StackPanel>
                 </StackPanel>

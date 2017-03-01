@@ -2,7 +2,6 @@
 using System.Linq;
 using System.ServiceModel;
 using System.IO;
-using System.Reflection;
 
 namespace MainLib
 {
@@ -72,8 +71,8 @@ namespace MainLib
 
                 if (!RepositoryDirectory.Contains('\\')) return false; // nu direct pe drive
                 
-                if (RepositoryDirectory.Contains(Path.GetDirectoryName( // nu in directorul aplicatiei
-                     Assembly.GetAssembly(typeof(FileRepositoryService)).CodeBase))) return false; 
+                //if (RepositoryDirectory.Contains(Path.GetDirectoryName( // nu in directorul aplicatiei
+                //     Assembly.GetAssembly(typeof(FileRepositoryService)).CodeBase))) return false; 
                 return true;
             }
 

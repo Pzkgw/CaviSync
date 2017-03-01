@@ -7,7 +7,7 @@ namespace MainLib
     {
         public const int EndpointPort = 5000;
         public const string EndpointType = "net.tcp";
-        public static IPAddress EndpointIP = IPAddress.Parse("10.10.10.99");
+        public static IPAddress EndpointIP = IPAddress.Parse("10.10.10.15");
 
         public const string
             regPath = "SOFTWARE\\Wow6432Node\\GTS Global Intelligence",

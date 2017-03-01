@@ -97,6 +97,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\MainLib\MainLib.csproj">
+      <Project>{0357b25d-7f29-4cbd-930b-5571d15b9969}</Project>
+      <Name>MainLib</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ServiceForClient\ServiceForClient.csproj">
       <Project>{f93cca9c-d1f5-4356-8160-abd397c6185c}</Project>
       <Name>ServiceForClient</Name>
