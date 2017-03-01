@@ -5,8 +5,97 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CaviSyncClient"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
+        Closing="Window_Closing" MouseLeftButtonDown="Window_MouseLeftButtonDown" WindowStartupLocation="CenterScreen"
+        SizeToContent="WidthAndHeight" WindowStyle="None" AllowsTransparency="True" ResizeMode="CanResizeWithGrip" Background="#FF505257">
     <Grid>
-        
+
+        <StackPanel Orientation="Vertical">
+
+            <StackPanel Orientation="Vertical">
+                <StackPanel HorizontalAlignment="Right">
+                    <Button Content="  X  " Click="Button_Click" Background="Transparent"                                         
+                        Foreground="{DynamicResource {x:Static SystemColors.InactiveCaptionBrushKey}}"                        
+                FontSize="26"
+                BorderBrush="Transparent"
+                BorderThickness="0" FontFamily="Tahoma"></Button>
+
+                </StackPanel>
+            </StackPanel>
+
+
+
+            <StackPanel HorizontalAlignment="Center">
+                <StackPanel Margin="15" Orientation="Vertical"  HorizontalAlignment="Left">
+                    <Label Content="Server" HorizontalAlignment="Center" FontSize="24" FontFamily="Miriam Fixed" Foreground="{DynamicResource {x:Static SystemColors.MenuBrushKey}}"/>
+                    <Label Content=" CAVI synchronization " FontSize="20" FontFamily="Miriam Fixed" Foreground="{DynamicResource {x:Static SystemColors.MenuBrushKey}}" Background="#FF6B6D74"/>
+                </StackPanel>
+            </StackPanel>
+
+
+            <GroupBox Margin="10" Header=" Local info" FontSize="16" Foreground="{DynamicResource {x:Static SystemColors.ScrollBarBrushKey}}" HorizontalAlignment="Center" BorderThickness="1">
+
+
+                <StackPanel Orientation="Vertical" Margin="15">
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="  IP: " ></Label>
+                        <Label x:Name="labelIp" Content="10.10.10.99" Foreground="{DynamicResource {x:Static SystemColors.InactiveCaptionBrushKey}}" />
+                        <Label Content="  Port: " ></Label>
+                        <Label x:Name="labelPort" Content="5000"  Foreground="{DynamicResource {x:Static SystemColors.InactiveCaptionBrushKey}}" />
+                    </StackPanel>
+                </StackPanel>
+            </GroupBox>
+
+            <GroupBox x:Name="serGroupBox" Header="Windows service" Margin="40" FontSize="16" Foreground="{DynamicResource {x:Static SystemColors.ScrollBarBrushKey}}" HorizontalAlignment="Left" BorderThickness="1">
+
+                <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+
+
+                    <Label Content="Current status:" Foreground="{DynamicResource {x:Static SystemColors.InactiveCaptionBrushKey}}" VerticalAlignment="Center" HorizontalAlignment="Center" FontFamily="Verdana"/>
+                    <Label Name="serLbl" Content="off" Foreground="{DynamicResource {x:Static SystemColors.MenuBrushKey}}" VerticalAlignment="Center" HorizontalAlignment="Center" FontFamily="Verdana" FontSize="16"/>
+                    <Label Content=", so:" Foreground="{DynamicResource {x:Static SystemColors.InactiveCaptionBrushKey}}" VerticalAlignment="Center" HorizontalAlignment="Center" FontFamily="Verdana"/>
+
+
+                    <Button Content=" Start it " Name="btnService" 
+                Background="Transparent" 
+                FontSize="18" 
+                Margin="10"
+                BorderBrush="Transparent"
+                BorderThickness="0" HorizontalAlignment="Right" DockPanel.Dock="Right" Foreground="{DynamicResource {x:Static SystemColors.InactiveCaptionBrushKey}}" FontFamily="Times New Roman" Height="41"/>
+
+                    <Button Content=" Stop it " Name="btnSerDel" 
+                Background="Transparent" 
+                FontSize="18" 
+                Margin="10"
+                BorderBrush="Transparent"
+                BorderThickness="0" HorizontalAlignment="Right" DockPanel.Dock="Right" Foreground="{DynamicResource {x:Static SystemColors.InactiveCaptionBrushKey}}" FontFamily="Times New Roman" Height="41"/>
+
+
+
+                </StackPanel>
+
+            </GroupBox>
+
+
+            <GroupBox Margin="10" Header="Synchronization directory " BorderThickness="1" FontSize="16" Foreground="{DynamicResource {x:Static SystemColors.ScrollBarBrushKey}}">
+
+                <StackPanel>
+                    <TextBox x:Name="textBox" Margin="5" Background="{DynamicResource {x:Static SystemColors.ScrollBarBrushKey}}" FontFamily="Times New Roman" VerticalAlignment="Center"/>
+
+                    <Button Content=" Update " Name="btnDirUpdate" 
+                        HorizontalAlignment="Center"
+                Background="Transparent" 
+                FontSize="18" 
+                Margin="10"
+                BorderBrush="Transparent"
+                BorderThickness="0" Foreground="{DynamicResource {x:Static SystemColors.InactiveCaptionBrushKey}}" FontFamily="Times New Roman" Height="41"/>
+                </StackPanel>
+            </GroupBox>
+
+
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="15"/>
+
+            <Label Name="infoLbl" FontSize="16" FontFamily="Times New Roman" Margin="16,0" Foreground="{DynamicResource {x:Static SystemColors.InfoBrushKey}}" VerticalAlignment="Bottom"/>
+        </StackPanel>
+
     </Grid>
 </Window>

@@ -24,5 +24,20 @@ namespace CaviSyncClient
         {
             InitializeComponent();
         }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+
+        }
+
+        private void Window_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            DragMove();
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            Close();
+        }
     }
 }
