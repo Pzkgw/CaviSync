@@ -2,13 +2,14 @@
 using System.Net;
 using System.Net.NetworkInformation;
 using System.Windows;
+using System.Windows.Forms;
 using System.Windows.Input;
 using MainLib;
 
 namespace CaviSyncClient
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// CAVI synchronization CLIENT application
     /// </summary>
     public partial class MainWindow : Window
     {
@@ -24,11 +25,16 @@ namespace CaviSyncClient
 
             textBoxIPServer.Text = "10.10.10.15";
 
-            //        Utils.ExecuteCommand(
-            //System.Runtime.InteropServices.RuntimeEnvironment.GetRuntimeDirectory() +
-            //"\\InstallUtil.exe /i /unattended " +
-            //"ServiceForServer.exe");
+            UpdateDirectoryListButtons();
 
+        }
+
+        private void UpdateDirectoryListButtons()
+        {
+            const string add = "  Add  ", del = " Clear ";
+            btn1.Content = (textBox1.Content.ToString().Length < 3) ? add : del;
+            btn2.Content = (textBox2.Content.ToString().Length < 3) ? add : del;
+            btn3.Content = (textBox3.Content.ToString().Length < 3) ? add : del;
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
@@ -136,7 +142,7 @@ namespace CaviSyncClient
             }
             else
             {
-                MessageBox.Show(string.Format(" Server IP does not answer.{0}{0} Reply status: {1}",
+                System.Windows.MessageBox.Show(string.Format(" Server IP does not answer.{0}{0} Reply status: {1}",
                     Environment.NewLine, (reply == null) ? " no reply" : reply.Status.ToString()));
                 return false;
             }
@@ -168,6 +174,37 @@ namespace CaviSyncClient
         private void btnDirUpdate_Click(object sender, RoutedEventArgs e)
         {
             //RegEdit.ServerUpdate(textBox1.Content.ToString());
+        }
+
+        private void btnDirSelect_Click(object sender, RoutedEventArgs e)
+        {
+            System.Windows.Controls.Button btn = (System.Windows.Controls.Button)sender;
+            string newTextBoxString = " ";
+
+            if (btn.Content.ToString().Contains("d")) // "Add"
+            {
+                var dialog = new FolderBrowserDialog();
+                DialogResult result = dialog.ShowDialog();
+
+                newTextBoxString = dialog.SelectedPath;
+            }
+
+            switch (btn.Name[btn.Name.Length - 1])
+            {
+                case '1':
+                    textBox1.Content = newTextBoxString;
+                    break;
+                case '2':
+                    textBox2.Content = newTextBoxString;
+                    break;
+                case '3':
+                    textBox3.Content = newTextBoxString;
+                    break;
+                default:
+                    break;
+            }
+
+            UpdateDirectoryListButtons();
         }
 
         private void btnSerDel_Click(object sender, RoutedEventArgs e)

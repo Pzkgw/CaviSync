@@ -9,7 +9,6 @@ namespace ConsoleClient
     class Seeker
     {
         private Timer tim;
-        private StorageFileInfo[] files = null;
 
         public static string[] excludeFileExtensions =
             new string[] { "*.tmp", "*.lnk", "*.pst" };
@@ -137,6 +136,8 @@ namespace ConsoleClient
 
         private void ListFiles()
         {
+
+            StorageFileInfo[] files = null;
 
             using (FileRepositoryServiceClient client = new FileRepositoryServiceClient())
             {

@@ -6,7 +6,7 @@ using MainLib;
 namespace CaviSyncServer
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// CAVI synchronization SERVER application
     /// </summary>
     public partial class MainWindow : Window
     {

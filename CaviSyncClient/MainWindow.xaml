@@ -55,7 +55,7 @@
                 </StackPanel>
             </GroupBox>
 
-            <GroupBox Margin="10" Header=" Directories that send their content to the server" BorderThickness="1" FontSize="16" Foreground="{DynamicResource {x:Static SystemColors.ScrollBarBrushKey}}">
+            <GroupBox Margin="10" Header=" Directories to send their content to the server " BorderThickness="1" FontSize="16" Foreground="{DynamicResource {x:Static SystemColors.ScrollBarBrushKey}}">
 
                 <StackPanel>
 
@@ -79,6 +79,7 @@
 
                         <Button Margin="4" Grid.Row="0" Grid.Column="1" Content=" Add " Name="btn1" HorizontalAlignment="Right"
                             Background="{x:Null}"
+                                Click="btnDirSelect_Click"
                 FontSize="18"
                 BorderBrush="Transparent"
                 BorderThickness="0"  FontFamily="Times New Roman" Foreground="{DynamicResource {x:Static SystemColors.ScrollBarBrushKey}}"/>
@@ -90,6 +91,7 @@
 
                         <Button Margin="4" Grid.Row="1" Grid.Column="1"  Content=" Add " Name="btn2" HorizontalAlignment="Right" 
                             Background="{x:Null}"
+                                Click="btnDirSelect_Click"
                 FontSize="18"
                 BorderBrush="Transparent"
                 BorderThickness="0"  FontFamily="Times New Roman" Foreground="{DynamicResource {x:Static SystemColors.ScrollBarBrushKey}}"/>
@@ -102,6 +104,7 @@
 
                         <Button Margin="4" Grid.Row="2" Grid.Column="1"  Content=" Add " Name="btn3" HorizontalAlignment="Right" 
                             Background="{x:Null}"
+                                Click="btnDirSelect_Click"
                 FontSize="18"
                 BorderBrush="Transparent"
                 BorderThickness="0"  FontFamily="Times New Roman" Foreground="{DynamicResource {x:Static SystemColors.ScrollBarBrushKey}}"/>
