@@ -10,32 +10,26 @@ namespace CaviSyncServer
     /// </summary>
     public partial class MainWindow : Window
     {
-        const string 
+        const string
             serviceName = "CaviSyncServerService",
             serviceExe = "ServiceForServer.exe";
         public MainWindow()
         {
             InitializeComponent();
 
-            {
-                IPAddress ip = Utils.GetLocalIpAddress();
-                if (ip != null) labelIp.Content = ip.ToString();
-            }
-
-            SetServiceGui(Exec.SerIsOn(serviceName));
-
             btnDirRefresh_Click(null, null);
 
-    //        Utils.ExecuteCommand(
-    //System.Runtime.InteropServices.RuntimeEnvironment.GetRuntimeDirectory() +
-    //"\\InstallUtil.exe /i /unattended " +
-    //"ServiceForServer.exe");
+            //        Utils.ExecuteCommand(
+            //System.Runtime.InteropServices.RuntimeEnvironment.GetRuntimeDirectory() +
+            //"\\InstallUtil.exe /i /unattended " +
+            //"ServiceForServer.exe");
 
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             // curatenie de primavara
+            textBox.TextChanged -= TextBox_TextChanged;
         }
 
         private void Window_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -78,10 +72,10 @@ namespace CaviSyncServer
 
                 //VwSer.ProjectInstaller l = new VwSer.ProjectInstaller();
                 //l.Install();
-                Utils.ExecuteCommand(
+                started = (Utils.ExecuteCommand(
                     System.Runtime.InteropServices.RuntimeEnvironment.GetRuntimeDirectory() +
                     "\\InstallUtil.exe /i /unattended " +
-                    serviceExe); //  /user=GI\bogdan.visoiu /password=
+                    serviceExe) == 0); //  /user=GI\bogdan.visoiu /password=
 
                 /*
                 started = Services.Install(
@@ -89,12 +83,12 @@ namespace CaviSyncServer
 
                 Services.SetDescriereServiciu(Settings.serName, Settings.serDesc);*/
 
-                infoLbl.Content = "Service " + (started ? "" : "was not") + "started";
+                infoLbl.Content =  ("Service" + (started ? "" : " was not") + " started");
 
 
                 Exec.SerStart(serviceName);
                 SetServiceGui(true);
-                
+
             }
             else
             {
@@ -103,9 +97,31 @@ namespace CaviSyncServer
 
         }
 
+        /// <summary>
+        /// Refresh all GUI data
+        /// </summary>
         private void btnDirRefresh_Click(object sender, RoutedEventArgs e)
         {
+            textBox.TextChanged -= TextBox_TextChanged;
+
+            {
+                IPAddress ip = Utils.GetLocalIpAddress();
+                if (ip != null) labelIp.Content = ip.ToString();
+            }
+
+            SetServiceGui(Exec.SerIsOn(serviceName));
+
             textBox.Text = RegEdit.ServerGetPath();
+
+            btnDirUpdate.Visibility = Visibility.Collapsed;
+
+            textBox.TextChanged += TextBox_TextChanged;
+
+        }
+
+        private void TextBox_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
+        {
+            btnDirUpdate.Visibility = Visibility.Visible;
         }
 
         private void btnDirUpdate_Click(object sender, RoutedEventArgs e)
