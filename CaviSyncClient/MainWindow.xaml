@@ -44,7 +44,7 @@
 
 
                         <Label Content="    Local IP :" Foreground="{DynamicResource {x:Static SystemColors.InactiveCaptionBrushKey}}" ></Label>
-                        <Label x:Name="labelIp" Content="00.00.00.00" Foreground="{DynamicResource {x:Static SystemColors.MenuBrushKey}}" />
+                        <Label x:Name="labelIp" Content="000.000.000.000" Foreground="{DynamicResource {x:Static SystemColors.MenuBrushKey}}" />
 
 
                         <Label Content="  Port :" Foreground="{DynamicResource {x:Static SystemColors.InactiveCaptionBrushKey}}" ></Label>
@@ -53,6 +53,71 @@
                     </StackPanel>
 
                 </StackPanel>
+            </GroupBox>
+
+            <GroupBox Margin="10" Header=" Directories that send their content to the server" BorderThickness="1" FontSize="16" Foreground="{DynamicResource {x:Static SystemColors.ScrollBarBrushKey}}">
+
+                <StackPanel>
+
+                    <Grid>
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="9*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+
+
+
+                        <Label Margin="4" Grid.Row="0" Grid.Column="0" x:Name="textBox1" FontFamily="Times New Roman" FontSize="18" Content=" " Background="#FF393C44" Foreground="#FFA8B8B9"/>
+
+
+
+                        <Button Margin="4" Grid.Row="0" Grid.Column="1" Content=" Add " Name="btn1" HorizontalAlignment="Right"
+                            Background="{x:Null}"
+                FontSize="18"
+                BorderBrush="Transparent"
+                BorderThickness="0"  FontFamily="Times New Roman" Foreground="{DynamicResource {x:Static SystemColors.ScrollBarBrushKey}}"/>
+
+
+
+                        <Label Margin="4" Grid.Row="1" Grid.Column="0"   x:Name="textBox2" FontFamily="Times New Roman" FontSize="18" Content=" " Background="#FF393C44" Foreground="#FFA8B8B9"/>
+
+
+                        <Button Margin="4" Grid.Row="1" Grid.Column="1"  Content=" Add " Name="btn2" HorizontalAlignment="Right" 
+                            Background="{x:Null}"
+                FontSize="18"
+                BorderBrush="Transparent"
+                BorderThickness="0"  FontFamily="Times New Roman" Foreground="{DynamicResource {x:Static SystemColors.ScrollBarBrushKey}}"/>
+
+
+
+                        <Label Margin="4" Grid.Row="2" Grid.Column="0"  x:Name="textBox3" FontFamily="Times New Roman" FontSize="18" Content=" " Background="#FF393C44" Foreground="#FFA8B8B9"/>
+
+
+
+                        <Button Margin="4" Grid.Row="2" Grid.Column="1"  Content=" Add " Name="btn3" HorizontalAlignment="Right" 
+                            Background="{x:Null}"
+                FontSize="18"
+                BorderBrush="Transparent"
+                BorderThickness="0"  FontFamily="Times New Roman" Foreground="{DynamicResource {x:Static SystemColors.ScrollBarBrushKey}}"/>
+
+
+
+
+
+
+
+
+                    </Grid>
+
+
+                </StackPanel>
+
             </GroupBox>
 
             <GroupBox x:Name="serGroupBox" Header="Windows service" Margin="40" FontSize="16" Foreground="{DynamicResource {x:Static SystemColors.ScrollBarBrushKey}}" HorizontalAlignment="Center" BorderThickness="1">
@@ -83,46 +148,6 @@
 
 
 
-                </StackPanel>
-
-            </GroupBox>
-
-
-            <GroupBox Margin="10" Header="Synchronization directory " BorderThickness="1" FontSize="16" Foreground="{DynamicResource {x:Static SystemColors.ScrollBarBrushKey}}">
-
-                <StackPanel>
-                    <ListBox>
-
-                        <ListBoxItem>
-                            <StackPanel Orientation="Horizontal">
-                                <TextBox x:Name="textBox1" Margin="5" Background="{DynamicResource {x:Static SystemColors.ScrollBarBrushKey}}" FontFamily="Times New Roman" VerticalAlignment="Center" FontSize="18"/>
-                            </StackPanel>
-                        </ListBoxItem>
-
-                        <ListBoxItem>
-                            <StackPanel Orientation="Horizontal">
-                                <TextBox x:Name="textBox2" Margin="5" Background="{DynamicResource {x:Static SystemColors.ScrollBarBrushKey}}" FontFamily="Times New Roman" VerticalAlignment="Center" FontSize="18"/>
-                            </StackPanel>
-                        </ListBoxItem>
-
-                    </ListBox>
-
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                        <Button Content=" Refresh " Name="btnDirRefresh"   
-                            Click="btnDirRefresh_Click"
-                Background="#FF414347"
-                FontSize="18" 
-                Margin="10"
-                BorderBrush="Transparent"
-                BorderThickness="0" Foreground="{DynamicResource {x:Static SystemColors.InactiveCaptionBrushKey}}" FontFamily="Times New Roman" Height="41"/>
-                        <Button Content=" Update " Name="btnDirUpdate" 
-                        Click="btnDirUpdate_Click"
-                Background="#FF414347"
-                FontSize="18" 
-                Margin="10"
-                BorderBrush="Transparent"
-                BorderThickness="0" Foreground="{DynamicResource {x:Static SystemColors.InactiveCaptionBrushKey}}" FontFamily="Times New Roman" Height="41"/>
-                    </StackPanel>
                 </StackPanel>
 
             </GroupBox>

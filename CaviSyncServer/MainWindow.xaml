@@ -39,12 +39,36 @@
                 <StackPanel Orientation="Vertical" Margin="15">
                     <StackPanel Orientation="Horizontal">
                         <Label Content="  IP:" Foreground="{DynamicResource {x:Static SystemColors.InactiveCaptionBrushKey}}" ></Label>
-                        <Label x:Name="labelIp" Content="00.00.00.00" Foreground="{DynamicResource {x:Static SystemColors.MenuBrushKey}}" />
+                        <Label x:Name="labelIp" Content="192.168.100.255" Foreground="{DynamicResource {x:Static SystemColors.MenuBrushKey}}" />
                         <Label Content="  Port:" Foreground="{DynamicResource {x:Static SystemColors.InactiveCaptionBrushKey}}" ></Label>
                         <Label x:Name="labelPort" Content="5000"  Foreground="{DynamicResource {x:Static SystemColors.MenuBrushKey}}" />
                     </StackPanel>
                 </StackPanel>
             </GroupBox>
+
+            <GroupBox Margin="10" Header="Synchronization directory " BorderThickness="1" FontSize="16" Foreground="{DynamicResource {x:Static SystemColors.ScrollBarBrushKey}}">
+
+                <StackPanel>
+                    <TextBox x:Name="textBox" Margin="5" Background="{DynamicResource {x:Static SystemColors.ScrollBarBrushKey}}" FontFamily="Times New Roman" VerticalAlignment="Center" FontSize="18"/>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                        <Button Content=" Refresh " Name="btnDirRefresh"   
+                            Click="btnDirRefresh_Click"
+                Background="#FF414347"
+                FontSize="18" 
+                Margin="10"
+                BorderBrush="Transparent"
+                BorderThickness="0" Foreground="{DynamicResource {x:Static SystemColors.InactiveCaptionBrushKey}}" FontFamily="Times New Roman" Height="41"/>
+                        <Button Content=" Update " Name="btnDirUpdate" 
+                        Click="btnDirUpdate_Click"
+                Background="#FF414347"
+                FontSize="18" 
+                Margin="10"
+                BorderBrush="Transparent"
+                BorderThickness="0" Foreground="{DynamicResource {x:Static SystemColors.InactiveCaptionBrushKey}}" FontFamily="Times New Roman" Height="41"/>
+                    </StackPanel>
+                </StackPanel>
+            </GroupBox>
+
 
             <GroupBox x:Name="serGroupBox" Header="Windows service" Margin="40" FontSize="16" Foreground="{DynamicResource {x:Static SystemColors.ScrollBarBrushKey}}" HorizontalAlignment="Center" BorderThickness="1">
 
@@ -79,28 +103,6 @@
             </GroupBox>
 
 
-            <GroupBox Margin="10" Header="Synchronization directory " BorderThickness="1" FontSize="16" Foreground="{DynamicResource {x:Static SystemColors.ScrollBarBrushKey}}">
-
-                <StackPanel>
-                    <TextBox x:Name="textBox" Margin="5" Background="{DynamicResource {x:Static SystemColors.ScrollBarBrushKey}}" FontFamily="Times New Roman" VerticalAlignment="Center" FontSize="18"/>
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                        <Button Content=" Refresh " Name="btnDirRefresh"   
-                            Click="btnDirRefresh_Click"
-                Background="#FF414347"
-                FontSize="18" 
-                Margin="10"
-                BorderBrush="Transparent"
-                BorderThickness="0" Foreground="{DynamicResource {x:Static SystemColors.InactiveCaptionBrushKey}}" FontFamily="Times New Roman" Height="41"/>
-                        <Button Content=" Update " Name="btnDirUpdate" 
-                        Click="btnDirUpdate_Click"
-                Background="#FF414347"
-                FontSize="18" 
-                Margin="10"
-                BorderBrush="Transparent"
-                BorderThickness="0" Foreground="{DynamicResource {x:Static SystemColors.InactiveCaptionBrushKey}}" FontFamily="Times New Roman" Height="41"/>
-                    </StackPanel>
-                </StackPanel>
-            </GroupBox>
 
 
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="15"/>
