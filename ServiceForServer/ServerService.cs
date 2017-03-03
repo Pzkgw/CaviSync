@@ -22,8 +22,6 @@ namespace ServiceForServer
 
         protected override void OnStart(string[] args)
         {
-
-
             if (host != null)
             {
                 host.Close();
@@ -146,31 +144,6 @@ namespace ServiceForServer
             }
         }
 
-
-
-
-
-
-        private static int Log(string s)
-        {
-            //(new Thread(() =>            {
-
-
-
-            try
-            {
-                using (StreamWriter sw = new StreamWriter("c:\\Log.txt", true))
-                {
-                    sw.WriteLine(string.Format("{0} : {1}", DateTime.Now.ToString(), s));
-                    sw.Flush();
-                    sw.Close();
-                }
-            }
-            catch { }
-
-            //})).Start();
-            return 0;
-        }
 
 
     }

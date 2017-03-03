@@ -121,6 +121,52 @@ namespace MainLib
         }
 
 
+
+        public static bool ServerIpAddressDoesAnswer(string ipString, ref string replyStatus)
+        {
+            //IPAddress ad=null;            IPAddress.TryParse(textBoxIPServer.Text, out ad);
+            //if(textBoxIPServer.Text.Length<7 || textBoxIPServer.Text.Length > 15 ||
+            //    textBoxIPServer.Text.Contains("000") || textBoxIPServer.Text.Count(c => c == '.') != 3)
+            //{
+            //    MessageBox.Show("Ip address textbox string not valid");
+            //        return;
+            //}
+
+            IPAddress ipServer = null;
+            PingReply reply = null;
+
+            try
+            {
+                IPAddress.TryParse(ipString, out ipServer);//textBoxIPServer.Text "125.100.0.15"
+                reply = (new Ping()).Send(ipServer);
+            }
+            catch (Exception) { }
+
+            if (reply == null)
+            {
+                replyStatus = " no reply";
+                return false;
+                    }
+
+            replyStatus = reply.Status.ToString();
+
+            if (reply.Status == IPStatus.Success)
+            {
+                //("Address: {0}", reply.Address.ToString());
+                //("RoundTrip time: {0}", reply.RoundtripTime);
+                //("Time to live: {0}", reply.Options.Ttl);
+                //("Don't fragment: {0}", reply.Options.DontFragment);
+                //("Buffer size: {0}", reply.Buffer.Length);
+
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+
         public static bool IsFileLocked(FileInfo e)
         {
             FileStream stream = null;
@@ -212,6 +258,29 @@ namespace MainLib
         public static bool IsEnglishLetter(char c)
         {
             return (c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z');
+        }
+
+
+
+        public static int Log(string s)
+        {
+            //(new Thread(() =>            {
+
+
+
+            try
+            {
+                using (StreamWriter sw = new StreamWriter("c:\\Log.txt", true))
+                {
+                    sw.WriteLine(string.Format("{0} : {1}", DateTime.Now.ToString(), s));
+                    sw.Flush();
+                    sw.Close();
+                }
+            }
+            catch { }
+
+            //})).Start();
+            return 0;
         }
 
 

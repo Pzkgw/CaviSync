@@ -9,7 +9,8 @@ namespace MainLib
 
         const string
             ServerPathKeyName = "Path",
-            ClientPathKeyName = "DirLocal";
+            ClientPathKeyName = "DirLocal",
+            ServerIP = "ServerIP";
         public static void ServerUpdate(string path) // IPAddress ip, int port, Guid guid,
         {
             if (path == null) return;
@@ -69,6 +70,26 @@ namespace MainLib
         }
 
 
+        public static bool ClientUpdate(string serverIP) // IPAddress ip, int port, Guid guid,
+        {
+            if (serverIP == null) return false;
+
+            RegistryKey keySv;
+
+            keySv = Registry.LocalMachine.CreateSubKey(Optiuni.regPath, RegistryKeyPermissionCheck.ReadWriteSubTree);
+            if (keySv == null) return false;
+
+            keySv = keySv.CreateSubKey(Optiuni.regPathCli, RegistryKeyPermissionCheck.ReadWriteSubTree);
+            if (keySv == null) return false;
+
+            keySv.SetValue(ServerIP, serverIP);
+
+            keySv.Close();
+
+            return true;
+
+        }
+
         public static bool ClientUpdate(string path, int idx) // IPAddress ip, int port, Guid guid,
         {
             if (path == null) return false;
@@ -125,6 +146,30 @@ namespace MainLib
 
             return retVal;
 
+        }
+
+        public static string ClientGetServerIP()
+        {
+            RegistryKey keySv = null;
+            string retVal = null;
+
+            keySv = Registry.LocalMachine.OpenSubKey(Optiuni.regPath, false);
+            if (keySv == null) return retVal;
+
+            keySv = keySv.OpenSubKey(Optiuni.regPathCli, false);
+            if (keySv == null) return retVal;
+
+            object o = null;
+            o = keySv.GetValue(ServerIP);
+
+            if (o != null)
+            {
+                retVal = o.ToString();
+            }
+
+            keySv.Close();
+
+            return retVal;
         }
 
 

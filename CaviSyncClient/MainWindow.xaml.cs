@@ -66,9 +66,19 @@ namespace CaviSyncClient
 
         private void btnService_Click(object sender, RoutedEventArgs e)
         {
-            if (!ServerIpAddressDoesAnswer()) return;
+            {
+                string replyStatus = null;
+                if (!Utils.ServerIpAddressDoesAnswer(textBoxIPServer.Text, ref replyStatus))
+                {
+                    System.Windows.MessageBox.Show(string.Format(
+                        " Server IP does not answer.{0}{0} Reply status: {1}",
+                        Environment.NewLine, replyStatus));
+                    return;
+                }
+            }
 
-            return;
+            Optiuni.EndpointIP = textBoxIPServer.Text;
+            RegEdit.ClientUpdate(Optiuni.EndpointIP);
 
             if (!Exec.SerIsOn(serviceName))
             {
@@ -99,7 +109,7 @@ namespace CaviSyncClient
 
                 Services.SetDescriereServiciu(Settings.serName, Settings.serDesc);*/
 
-                infoLbl.Content = (" service" + (started ? "" : " was not") + " started");
+                infoLbl.Content = ("Service" + (started ? "" : " was not") + " started");
 
 
                 Exec.SerStart(serviceName);
@@ -113,42 +123,6 @@ namespace CaviSyncClient
 
         }
 
-        private bool ServerIpAddressDoesAnswer()
-        {
-            //IPAddress ad=null;            IPAddress.TryParse(textBoxIPServer.Text, out ad);
-            //if(textBoxIPServer.Text.Length<7 || textBoxIPServer.Text.Length > 15 ||
-            //    textBoxIPServer.Text.Contains("000") || textBoxIPServer.Text.Count(c => c == '.') != 3)
-            //{
-            //    MessageBox.Show("Ip address textbox string not valid");
-            //        return;
-            //}
-
-            IPAddress ipServer = null;
-            PingReply reply = null;
-
-            try
-            {
-                IPAddress.TryParse(textBoxIPServer.Text, out ipServer);//textBoxIPServer.Text "125.100.0.15"
-                reply = (new Ping()).Send(ipServer);
-            }
-            catch (Exception) { }
-
-            if (reply != null && reply.Status == IPStatus.Success)
-            {
-                //("Address: {0}", reply.Address.ToString());
-                //("RoundTrip time: {0}", reply.RoundtripTime);
-                //("Time to live: {0}", reply.Options.Ttl);
-                //("Don't fragment: {0}", reply.Options.DontFragment);
-                //("Buffer size: {0}", reply.Buffer.Length);
-                return true;
-            }
-            else
-            {
-                System.Windows.MessageBox.Show(string.Format(" Server IP does not answer.{0}{0} Reply status: {1}",
-                    Environment.NewLine, (reply == null) ? " no reply" : reply.Status.ToString()));
-                return false;
-            }
-        }
 
         /// <summary>
         /// Refresh all GUI data
@@ -220,7 +194,7 @@ namespace CaviSyncClient
             }
             else
             {
-                infoLbl.Content = "Directory not added. It does not exist or he is already in the list";
+                infoLbl.Content = "Directory not added.It does not exist or he is already in the list";
             }
 
             UpdateDirectoryListButtons();

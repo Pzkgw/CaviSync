@@ -5,7 +5,7 @@ namespace MainLib
     {
         public const int EndpointPort = 5000;
         public const string EndpointType = "net.tcp";
-        public static string EndpointIP = "10.10.10.10";
+        public static string EndpointIP = "10.10.10.15";
         //public static IPAddress EndpointIP = IPAddress.Parse("10.10.10.15");
 
         public const string
