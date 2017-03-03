@@ -92,8 +92,6 @@ namespace ServiceForClient
         {
             tim.Enabled = false;
 
-            Utils.Log("Tim_Elapsed0");
-
             try
             {
                 IPAddress localIP = Utils.GetLocalIpAddress();
@@ -103,16 +101,14 @@ namespace ServiceForClient
                 using (FileRepositoryServiceClient client = new FileRepositoryServiceClient())
                 {
                     Optiuni.EndpointIP = RegEdit.ClientGetServerIP();
-                    Utils.Log("Tim_Elapsed1");
 
                     // Trebuie setat exact dupa constructorul FileRepositoryServiceClient
                     client.SetEndpointAddress(Optiuni.GetEndpointAddress());
-                    Utils.Log("Tim_Elapsed2");
 
                     for (int i = 1; i < 4; i++)
                     {
                         dirClient = RegEdit.ClientGetPath(i);
-                        Utils.Log(dirClient);
+
                         if (dirClient != null && dirClient.Length > 2)
                         {
                             Optiuni.dirClient = dirClient;
@@ -127,9 +123,9 @@ namespace ServiceForClient
 
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                Utils.Log(ex.ToString());
+                //Utils.Log(ex.ToString());
             }
 
 
