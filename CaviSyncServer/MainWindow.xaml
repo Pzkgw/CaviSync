@@ -75,9 +75,9 @@
                 <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
 
 
-                    <Label Content="Current status:" Foreground="{DynamicResource {x:Static SystemColors.InactiveCaptionBrushKey}}" VerticalAlignment="Center" HorizontalAlignment="Center" FontFamily="Verdana"/>
-                    <Label Name="serLbl" Content="off" Foreground="{DynamicResource {x:Static SystemColors.MenuBrushKey}}" VerticalAlignment="Center" HorizontalAlignment="Center" FontFamily="Verdana" FontSize="16"/>
-                    <Label Content=", so:" Foreground="{DynamicResource {x:Static SystemColors.InactiveCaptionBrushKey}}" VerticalAlignment="Center" HorizontalAlignment="Center" FontFamily="Verdana"/>
+                    <Label Content=" Current status is" Foreground="{DynamicResource {x:Static SystemColors.InactiveCaptionBrushKey}}" VerticalAlignment="Center" HorizontalAlignment="Center" FontFamily="Verdana"/>
+                    <Label Name="serLbl" Content="off" Foreground="{DynamicResource {x:Static SystemColors.MenuBrushKey}}" VerticalAlignment="Center" HorizontalAlignment="Center" FontFamily="Verdana" FontSize="16" FontWeight="Bold"/>
+                    <Label Content="so" Foreground="{DynamicResource {x:Static SystemColors.InactiveCaptionBrushKey}}" VerticalAlignment="Center" HorizontalAlignment="Center" FontFamily="Verdana"/>
 
 
                     <Button Content=" Start it " Name="btnService" 

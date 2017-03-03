@@ -28,8 +28,9 @@ namespace ConsoleClient
             {
                 return base.Channel.GetPreUploadCheckResult(clientIP, directory, file, lastWriteTimeUtcTicks, fileSize);
             }
-            catch (Exception) // alte exceptii, nu doar EndpointNotFoundException ---> simple return false
+            catch (Exception ex) // alte exceptii, nu doar EndpointNotFoundException ---> simple return false
             {
+                Console.WriteLine(ex.ToString());
             }
             return false;
         }
@@ -64,9 +65,12 @@ namespace ConsoleClient
             {
                 base.Channel.SendConnectionInfo(ip, port, path);
             }
-            catch (EndpointNotFoundException)
+            catch (Exception ex) // alte exceptii, nu doar EndpointNotFoundException ---> simple return false
             {
+                Console.WriteLine(ex.ToString());
             }
+
+
         }
 
         #endregion

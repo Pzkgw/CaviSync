@@ -14,9 +14,10 @@ namespace CaviSyncClient
     public partial class MainWindow : Window
     {
 
-        const string 
+        const string
             serviceName = "CaviSyncClientService",
-            serviceExe = "ServiceForClient.exe";
+            serviceExe = "ServiceForClient.exe"
+            ;
         public MainWindow()
         {
             InitializeComponent();
@@ -24,10 +25,13 @@ namespace CaviSyncClient
             btnDirRefresh_Click(null, null);
 
             textBoxIPServer.Text = "10.10.10.15";
+            textBoxIPServer.Width = 130;
+            textBoxIPServer.TextAlignment = TextAlignment.Center;
 
             UpdateDirectoryListButtons();
 
         }
+
 
         private void UpdateDirectoryListButtons()
         {
@@ -40,7 +44,7 @@ namespace CaviSyncClient
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             // curatenie de primavara
-           
+
         }
 
         private void Window_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -62,14 +66,12 @@ namespace CaviSyncClient
 
         private void btnService_Click(object sender, RoutedEventArgs e)
         {
-            if (!ServerIpAddressDoesAnswer()) return;          
+            if (!ServerIpAddressDoesAnswer()) return;
 
             return;
 
             if (!Exec.SerIsOn(serviceName))
             {
-                //RegistryCon.Update(null, -1, Guid.Empty, pathProviderLocal);
-
                 bool started = true;
 
                 //  The switches (username, password, etc) must
@@ -89,7 +91,7 @@ namespace CaviSyncClient
                 started = (Utils.ExecuteCommand(
                     System.Runtime.InteropServices.RuntimeEnvironment.GetRuntimeDirectory() +
                     "\\InstallUtil.exe /i /unattended " +
-                    serviceExe) == 0); //  /user=GI\bogdan.visoiu /password=
+                    serviceExe) == 0); // 
 
                 /*
                 started = Services.Install(
@@ -161,27 +163,31 @@ namespace CaviSyncClient
 
             SetServiceGui(Exec.SerIsOn(serviceName));
 
-            textBox1.Content = RegEdit.ServerGetPath();
+            string someString;
 
+            someString = RegEdit.ClientGetPath(1);
+            textBox1.Content = (someString == null) ? RegEdit.emptyDirectory : someString;
+
+            someString = RegEdit.ClientGetPath(2);
+            textBox2.Content = (someString == null) ? RegEdit.emptyDirectory : someString;
+
+            someString = RegEdit.ClientGetPath(3);
+            textBox3.Content = (someString == null) ? RegEdit.emptyDirectory : someString;
 
         }
 
-        private void TextBox_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
-        {
-
-        }
-
-        private void btnDirUpdate_Click(object sender, RoutedEventArgs e)
-        {
-            //RegEdit.ServerUpdate(textBox1.Content.ToString());
-        }
 
         private void btnDirSelect_Click(object sender, RoutedEventArgs e)
         {
-            System.Windows.Controls.Button btn = (System.Windows.Controls.Button)sender;
-            string newTextBoxString = " ";
+            infoLbl.Content = string.Empty;
 
-            if (btn.Content.ToString().Contains("d")) // "Add"
+            System.Windows.Controls.Button btn = (System.Windows.Controls.Button)sender;
+            string newTextBoxString = RegEdit.emptyDirectory;
+            int idx = 0;
+
+            bool folderAdd = btn.Content.ToString().Contains("d");
+
+            if (folderAdd) // "Add"
             {
                 var dialog = new FolderBrowserDialog();
                 DialogResult result = dialog.ShowDialog();
@@ -189,19 +195,32 @@ namespace CaviSyncClient
                 newTextBoxString = dialog.SelectedPath;
             }
 
+            System.Windows.Controls.Label uiElem = null;
             switch (btn.Name[btn.Name.Length - 1])
             {
                 case '1':
-                    textBox1.Content = newTextBoxString;
+                    uiElem = textBox1;
+                    idx = 1;
                     break;
                 case '2':
-                    textBox2.Content = newTextBoxString;
+                    uiElem = textBox2;
+                    idx = 2;
                     break;
                 case '3':
-                    textBox3.Content = newTextBoxString;
+                    uiElem = textBox3;
+                    idx = 3;
                     break;
                 default:
                     break;
+            }
+
+            if (RegEdit.ClientUpdate(newTextBoxString, idx) && uiElem != null)
+            {
+                uiElem.Content = newTextBoxString;
+            }
+            else
+            {
+                infoLbl.Content = "Directory not added. It does not exist or he is already in the list";
             }
 
             UpdateDirectoryListButtons();

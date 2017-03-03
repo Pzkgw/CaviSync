@@ -5,8 +5,15 @@ namespace MainLib
 {
     public static class RegEdit
     {
+        public const string emptyDirectory = " ";
+
+        const string
+            ServerPathKeyName = "Path",
+            ClientPathKeyName = "DirLocal";
         public static void ServerUpdate(string path) // IPAddress ip, int port, Guid guid,
         {
+            if (path == null) return;
+
             RegistryKey keySv;
             //= RegistryKey.OpenBaseKey(RegistryHive.LocalMachine,
             //                          Environment.Is64BitOperatingSystem
@@ -29,7 +36,7 @@ namespace MainLib
             //if (ip != null) keySv.SetValue("Ip", ip);
             //if (port > 0) keySv.SetValue("Port", port);
             //if (guid != Guid.Empty) keySv.SetValue("Guid", guid);
-            if (path != null) keySv.SetValue("Path", path);
+            keySv.SetValue(ServerPathKeyName, path);
 
             keySv.Close();
 
@@ -48,7 +55,7 @@ namespace MainLib
 
 
             object o = null;
-            o = keySv.GetValue("Path");
+            o = keySv.GetValue(ServerPathKeyName);
 
             if (o != null)
             {
@@ -60,6 +67,66 @@ namespace MainLib
             return retVal;
 
         }
+
+
+        public static bool ClientUpdate(string path, int idx) // IPAddress ip, int port, Guid guid,
+        {
+            if (path == null) return false;
+
+            RegistryKey keySv;
+
+            keySv = Registry.LocalMachine.CreateSubKey(Optiuni.regPath, RegistryKeyPermissionCheck.ReadWriteSubTree);
+            if (keySv == null) return false;
+
+            keySv = keySv.CreateSubKey(Optiuni.regPathCli, RegistryKeyPermissionCheck.ReadWriteSubTree);
+            if (keySv == null) return false;
+
+            // fara dubluri in lista
+            if (!path.Equals(emptyDirectory))
+            {
+                for (int i = 1; i < 4; i++)
+                {
+                    if (i != idx && path.Equals(keySv.GetValue(ClientPathKeyName + i)))
+                    {
+                        keySv.Close();
+                        return false;
+                    }
+                }
+            }
+
+            keySv.SetValue(ClientPathKeyName + idx, path);
+
+            keySv.Close();
+
+            return true;
+        }
+
+        public static string ClientGetPath(int idx)
+        {
+            RegistryKey keySv = null;
+            string retVal = null;
+
+            keySv = Registry.LocalMachine.OpenSubKey(Optiuni.regPath, false);
+            if (keySv == null) return retVal;
+
+            keySv = keySv.OpenSubKey(Optiuni.regPathCli, false);
+            if (keySv == null) return retVal;
+
+
+            object o = null;
+            o = keySv.GetValue(ClientPathKeyName + idx);
+
+            if (o != null)
+            {
+                retVal = o.ToString();
+            }
+
+            keySv.Close();
+
+            return retVal;
+
+        }
+
 
         /*
         public void UpdateDeriv(int idClient, int port, string path)
