@@ -2,6 +2,7 @@
 using System.Linq;
 using System.ServiceModel;
 using System.IO;
+using System.Collections.Generic;
 
 namespace MainLib
 {
@@ -9,6 +10,7 @@ namespace MainLib
         InstanceContextMode = InstanceContextMode.Single)]
     public class FileRepositoryService : IFileRepositoryService
     {
+        //List<string> busyGuys = new List<string>();
 
         #region Events
 
@@ -18,7 +20,6 @@ namespace MainLib
         public event InfoSendEventHandler InfoSend;
 
         #endregion
-
 
         #region IFileRepositoryService Members
 
@@ -52,13 +53,22 @@ namespace MainLib
             long lastWriteTimeUtcTicks, long fileSize)
         {
 
+            if (lastWriteTimeUtcTicks == 512 && fileSize == 1024 &&
+               Optiuni.preTestClientIP.Equals(clientIP) &&
+               Optiuni.preTestDirectoryName.Equals(directory) &&
+               Optiuni.preTestFileName.Equals(file)
+               )
+            {
+                return true;
+            }
+
             // daca directorul de sincronizare de pe server a fost schimbat
             // continuarea verificarilor de fisiere nu mai e necesara
-            bool repositoryDirectoryChanged = CheckStorehouseDirectory();
+            bool repositoryDirectoryChanged = RepositoryDirectoryChanged();
 
 
             //Console.WriteLine("_01" + Directory.Exists(RepositoryDirectory).ToString() + RepositoryDirectory);
-            
+
             if (string.IsNullOrEmpty(RepositoryDirectory)) return false;
 
             if (!Directory.Exists(RepositoryDirectory))
@@ -70,7 +80,7 @@ namespace MainLib
                 if (RepositoryDirectory.Length < 4) return false; // nu direct pe drive
 
                 if (!RepositoryDirectory.Contains('\\')) return false; // nu direct pe drive
-                
+
                 //if (RepositoryDirectory.Contains(Path.GetDirectoryName( // nu in directorul aplicatiei
                 //     Assembly.GetAssembly(typeof(FileRepositoryService)).CodeBase))) return false; 
                 return true;
@@ -119,7 +129,7 @@ namespace MainLib
         }
 
 
-        private bool CheckStorehouseDirectory()
+        private bool RepositoryDirectoryChanged()
         {
             string regVal = null;
 
@@ -127,7 +137,7 @@ namespace MainLib
             {
                 regVal = RegEdit.ServerGetPath();
             }
-            catch(Exception)
+            catch (Exception)
             {
                 //Console.WriteLine("EXC-"+ex.ToString());
             }
@@ -138,6 +148,12 @@ namespace MainLib
             {
                 regVal = Optiuni.dirServer;
                 RegEdit.ServerUpdate(regVal);
+            }
+
+            if (string.IsNullOrEmpty(regVal))
+            {
+                RepositoryDirectory = null;
+                return true;
             }
 
             if (regVal.Equals(RepositoryDirectory) ||
@@ -167,11 +183,24 @@ namespace MainLib
             //var sw = Stopwatch.StartNew();
 
             FileStream outputStream = null;
+            string filePath = string.Empty;
+
+            filePath = Path.Combine(RepositoryDirectory, RepositoryHost, msg.VirtualPath);
+
+            //(new FileInfo(filePath)).GetAccessControl
+
+            //if (Utils.IsFileLocked(new FileInfo(filePath)))
+            //{
+            //    Utils.Log("Lock " + filePath);
+            //    return;
+            //}
+            //else
+            //{
+            //    Utils.Log("UnLock" + filePath);
+            //}
 
             try
             {
-                string filePath = Path.Combine(RepositoryDirectory, RepositoryHost, msg.VirtualPath);
-
                 {
                     string dir = Path.GetDirectoryName(filePath);
 
@@ -202,6 +231,7 @@ namespace MainLib
                 {
                     msg.DataStream.Close();
                 }
+
             }
 
             //sw.Stop();
@@ -290,6 +320,11 @@ namespace MainLib
         {
             if (InfoSend != null)
                 InfoSend(this, new InfoEventArgs(ip, port, path));
+        }
+
+        public void Dispose()
+        {
+
         }
 
 

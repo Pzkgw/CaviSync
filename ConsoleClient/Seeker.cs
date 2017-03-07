@@ -52,6 +52,9 @@ namespace ConsoleClient
         static int tc = 0;
         private void SyncExec()
         {
+            Optiuni.EndpointIP = "10.10.10.15";
+            Optiuni.dirClient = @"c:\sync\";
+
             try
             {
                 IPAddress localIP = Utils.GetLocalIpAddress();
@@ -66,15 +69,13 @@ namespace ConsoleClient
                     client.SetEndpointAddress(Optiuni.GetEndpointAddress());
                     client.SendConnectionInfo(localIP_string, Optiuni.EndpointPort, dirClient);
 
-
                     // foreach file in client directory ---> send it
                     foreach (string s in Utils.GetDirectoryFileList(dirClient, "___", excludeFileExtensions))
                     {
+
                         FileInfo fi = new FileInfo(s);
                         long fileSize = 0;
 
-                        if (!Utils.IsFileLocked(fi))
-                        {
                             fileSize = fi.Length;
 
                             FileUploadMessage fum = new FileUploadMessage()
@@ -85,42 +86,41 @@ namespace ConsoleClient
 
                             fi = null;
 
-                            using (Stream uploadStream = new FileStream(s, FileMode.Open))
+                            if (client.GetPreUploadCheckResult(
+                                localIP_string,
+                                dirClient,
+                                fum.VirtualPath,
+                                fum.LastWriteTimeUtcTicks
+                                , fileSize))
                             {
-
-                                fum.DataStream = uploadStream;
-
-                                if (client.GetPreUploadCheckResult(
-                                    localIP_string,
-                                    dirClient,
-                                    fum.VirtualPath,
-                                    fum.LastWriteTimeUtcTicks
-                                    , fileSize))
+                                using (Stream uploadStream = new FileStream(s, FileMode.Open, FileAccess.Read, FileShare.None))
                                 {
+                                    fum.DataStream = uploadStream;
                                     client.PutFile(fum);
                                     ++tc;
                                     Console.WriteLine(string.Format("{0} fisiere trimise spre server ", tc.ToString()));
                                 }
-                                else
-                                {
-                                    // ::telnet server
-                                    //Console.WriteLine(
-                                    //    string.Format("ZERO:{0} {1} {2} {3}",
-                                    //    localIP_string,
-                                    //    dirClient,
-                                    //    fum.VirtualPath,
-                                    //    fum.LastWriteTimeUtcTicks
-                                    //    ));
-                                }
-
                             }
-                        }
+                            else
+                            {
+                                // ::telnet server
+                                //Console.WriteLine(
+                                //    string.Format("ZERO:{0} {1} {2} {3}",
+                                //    localIP_string,
+                                //    dirClient,
+                                //    fum.VirtualPath,
+                                //    fum.LastWriteTimeUtcTicks
+                                //    ));
+                            }
+
+
+                        
 
                     }
 
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Console.WriteLine(ex.ToString());
             }

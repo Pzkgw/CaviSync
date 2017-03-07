@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Net;
-using System.Net.NetworkInformation;
 using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Input;
@@ -66,6 +65,7 @@ namespace CaviSyncClient
 
         private void btnService_Click(object sender, RoutedEventArgs e)
         {
+
             {
                 string replyStatus = null;
                 if (!Utils.ServerIpAddressDoesAnswer(textBoxIPServer.Text, ref replyStatus))
@@ -79,6 +79,19 @@ namespace CaviSyncClient
 
             Optiuni.EndpointIP = textBoxIPServer.Text;
             RegEdit.ClientUpdate(Optiuni.EndpointIP);
+
+            // Verific conexiunea:
+            // portul e deschis si se pot trimite, primi mesaje
+            {
+                string rv = ServiceForClient.TestConexiune.DoEeet();
+
+                if (rv != null)
+                {
+                    System.Windows.MessageBox.Show(string.Format("{0}{1}{1}{2}",
+                        "Server does not answer.", Environment.NewLine, rv));
+                    return;
+                }
+            }
 
             if (!Exec.SerIsOn(serviceName))
             {
@@ -109,8 +122,15 @@ namespace CaviSyncClient
 
                 Services.SetDescriereServiciu(Settings.serName, Settings.serDesc);*/
 
-                infoLbl.Content = ("Service" + (started ? "" : " was not") + " started");
-
+                if (started)
+                {
+                    if (AtLeastOneSyncDirectoryAdded())
+                        infoLbl.Content = "Service started";
+                    else
+                        infoLbl.Content = "Empty service started. Add some directory";
+                }
+                else
+                    infoLbl.Content = "Service was not started";
 
                 Exec.SerStart(serviceName);
                 SetServiceGui(true);
@@ -121,6 +141,14 @@ namespace CaviSyncClient
                 infoLbl.Content = serviceName + " is already installed";
             }
 
+        }
+
+        private bool AtLeastOneSyncDirectoryAdded()
+        {
+            return (
+                (textBox1.Content != null && textBox1.Content.ToString().Length > 2) ||
+                (textBox2.Content != null && textBox2.Content.ToString().Length > 2) ||
+                (textBox3.Content != null && textBox3.Content.ToString().Length > 2));
         }
 
 

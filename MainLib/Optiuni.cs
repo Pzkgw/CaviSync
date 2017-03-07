@@ -11,8 +11,12 @@ namespace MainLib
         public const string
             regPath = "SOFTWARE\\Wow6432Node\\GTS Global Intelligence",
             regPathSrv = "CAVI Sync Server",
-            regPathCli = "CAVI Sync Client";
-        
+            regPathCli = "CAVI Sync Client",
+            preTestClientIP = "AnA ",
+            preTestDirectoryName = "are ",
+            preTestFileName = "*1024- de MERE !";
+
+
 
         public static string
             dirServer = @"c:\Depozit",

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.ServiceModel;
 using System.ServiceProcess;
@@ -12,7 +13,7 @@ namespace ServiceForServer
 
         ServiceHost host = null;
         FileRepositoryService service = null;
-
+        
         Timer tim;
 
         public ServerService()
@@ -59,15 +60,7 @@ namespace ServiceForServer
                 //Log(string.Format("EXCEPTION: {0} : {1}",
                 //DateTime.Now.ToString(), ex.Message.ToString().Trim()));
 
-                //if (host.State == CommunicationState.Faulted)
-                //{
-                //    host.Abort();
-                //}
-                //else
-                //{
-                host.Close();
-                host = null;
-                //}
+                OnStop();
             }
             //(TimeoutException timeProblem)(CommunicationException commProblem)             
             finally
@@ -92,17 +85,27 @@ namespace ServiceForServer
 
             if (host != null)
             {
-                host.Close();
+                if (host.State == CommunicationState.Faulted)
+                {
+                    host.Abort();
+                }
+                else
+                {
+                    host.Close();
+                }
+
                 host = null;
             }
         }
 
+        
 
         void Service_InfoSend(object sender, InfoEventArgs e)
         {
             //Console.WriteLine(string.Format(" client {0}:{1} {2}", e.IP, e.Port, e.Path));
 
             service.RepositoryHost = Optiuni.MakeNonComprehensiveDirectoryStringForServer(e.IP, e.Path);
+                        
         }
 
         void Host_Faulted(object sender, EventArgs e)
@@ -123,15 +126,17 @@ namespace ServiceForServer
                 if (File.Exists(path) && e.LastWriteTimeUtcTicks > 0)
                 {
                     fi = new FileInfo(path);
-                    if (!Utils.IsFileLocked(fi))
+                    //if (!Utils.IsFileLocked(fi))
                     {
                         DateTime dt = new DateTime(e.LastWriteTimeUtcTicks, DateTimeKind.Utc);
 
                         fi.LastWriteTime = dt;
                         fi.LastWriteTimeUtc = dt;
-                        fi = null;
+                        
                     }
-                    
+
+                    fi = null;
+
                 }
             }
             catch (Exception)

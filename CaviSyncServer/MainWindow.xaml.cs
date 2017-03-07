@@ -19,6 +19,7 @@ namespace CaviSyncServer
 
             btnDirRefresh_Click(null, null);
 
+
             //        Utils.ExecuteCommand(
             //System.Runtime.InteropServices.RuntimeEnvironment.GetRuntimeDirectory() +
             //"\\InstallUtil.exe /i /unattended " +
@@ -51,6 +52,34 @@ namespace CaviSyncServer
 
         private void btnService_Click(object sender, RoutedEventArgs e)
         {
+            if (textBox.Text == null) return;
+
+            if (textBox.Text.Length < 2)
+            {
+                textBox.Text = RegEdit.ServerGetPath();
+            }
+
+            if (textBox.Text.Length < 2)
+            {
+                infoLbl.Content = " Cannot start server with empty path";
+                return;
+            }
+
+                if (!System.IO.Directory.Exists(textBox.Text) && textBox.Text.Length>1)
+            {
+                try
+                {
+                    System.IO.Directory.CreateDirectory(textBox.Text);
+                }
+                catch (System.Exception)
+                {
+                    infoLbl.Content = " Cannot create directory";
+
+                    return;
+                }
+            }
+
+            RegEdit.ServerUpdate(textBox.Text);
 
             if (!Exec.SerIsOn(serviceName))
             {
@@ -117,6 +146,8 @@ namespace CaviSyncServer
 
             textBox.TextChanged += TextBox_TextChanged;
 
+            infoLbl.Content = "Data retrieved from registry";
+
         }
 
         private void TextBox_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
@@ -127,6 +158,7 @@ namespace CaviSyncServer
         private void btnDirUpdate_Click(object sender, RoutedEventArgs e)
         {
             RegEdit.ServerUpdate(textBox.Text);
+            infoLbl.Content = "Data sent to registry";
         }
 
         private void btnSerDel_Click(object sender, RoutedEventArgs e)

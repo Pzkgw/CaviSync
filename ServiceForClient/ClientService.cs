@@ -37,50 +37,53 @@ namespace ServiceForClient
             foreach (string s in Utils.GetDirectoryFileList(dirClient, "___", excludeFileExtensions))
             {
                 FileInfo fi = new FileInfo(s);
-                long fileSize = 0;
 
-                if (!Utils.IsFileLocked(fi))
+                if (Utils.IsFileLocked(fi))
                 {
-                    fileSize = fi.Length;
-
-                    FileUploadMessage fum = new FileUploadMessage()
-                    {
-                        VirtualPath = s.Substring(dirClient.Length + 1, s.Length - dirClient.Length - 1),
-                        LastWriteTimeUtcTicks = fi.LastWriteTimeUtc.Ticks
-                    };
-
                     fi = null;
+                    continue;
+                }
 
-                    using (Stream uploadStream = new FileStream(s, FileMode.Open))
+                long fileSize = fi.Length, lastWriteTimeUtc = fi.LastWriteTimeUtc.Ticks;
+
+                fi = null;
+
+                FileUploadMessage fum = new FileUploadMessage()
+                {
+                    VirtualPath = s.Substring(dirClient.Length + 1, s.Length - dirClient.Length - 1),
+                    LastWriteTimeUtcTicks = lastWriteTimeUtc
+                };
+
+                if (client.GetPreUploadCheckResult(
+                    localIP_string,
+                    dirClient,
+                    fum.VirtualPath,
+                    fum.LastWriteTimeUtcTicks
+                    , fileSize))
+                {
+                    using (Stream uploadStream = new FileStream(s, FileMode.Open, FileAccess.Read, FileShare.None))
                     {
 
                         fum.DataStream = uploadStream;
-
-                        if (client.GetPreUploadCheckResult(
-                            localIP_string,
-                            dirClient,
-                            fum.VirtualPath,
-                            fum.LastWriteTimeUtcTicks
-                            , fileSize))
-                        {
-                            client.PutFile(fum);
-                            //++tc;
-                            //Console.WriteLine(string.Format("{0} fisiere trimise spre server ", tc.ToString()));
-                        }
-                        else
-                        {
-                            // ::telnet server
-                            //Console.WriteLine(
-                            //    string.Format("ZERO:{0} {1} {2} {3}",
-                            //    localIP_string,
-                            //    dirClient,
-                            //    fum.VirtualPath,
-                            //    fum.LastWriteTimeUtcTicks
-                            //    ));
-                        }
-
+                        client.PutFile(fum);
+                        //++tc;
+                        //Console.WriteLine(string.Format("{0} fisiere trimise spre server ", tc.ToString()));
                     }
                 }
+                else
+                {
+                    // ::telnet server
+                    //Console.WriteLine(
+                    //    string.Format("ZERO:{0} {1} {2} {3}",
+                    //    localIP_string,
+                    //    dirClient,
+                    //    fum.VirtualPath,
+                    //    fum.LastWriteTimeUtcTicks
+                    //    ));
+                }
+
+
+
 
             }
 
@@ -92,42 +95,55 @@ namespace ServiceForClient
         {
             tim.Enabled = false;
 
+            FileRepositoryServiceClient client = null;
+
             try
             {
                 IPAddress localIP = Utils.GetLocalIpAddress();
                 string dirClient = null, localIP_string = (localIP == null) ? null : localIP.ToString();
 
                 // init conexiune cu serverul
-                using (FileRepositoryServiceClient client = new FileRepositoryServiceClient())
+                client = new FileRepositoryServiceClient();
+
+                Optiuni.EndpointIP = RegEdit.ClientGetServerIP();
+
+                // Trebuie setat exact dupa constructorul FileRepositoryServiceClient
+                client.SetEndpointAddress(Optiuni.GetEndpointAddress());
+
+                for (int i = 1; i < 4; i++)
                 {
-                    Optiuni.EndpointIP = RegEdit.ClientGetServerIP();
+                    dirClient = RegEdit.ClientGetPath(i);
 
-                    // Trebuie setat exact dupa constructorul FileRepositoryServiceClient
-                    client.SetEndpointAddress(Optiuni.GetEndpointAddress());
-
-                    for (int i = 1; i < 4; i++)
+                    if (dirClient != null && dirClient.Length > 2)
                     {
-                        dirClient = RegEdit.ClientGetPath(i);
+                        Optiuni.dirClient = dirClient;
 
-                        if (dirClient != null && dirClient.Length > 2)
-                        {
-                            Optiuni.dirClient = dirClient;
+                        dirClient = Optiuni.GetDirClient();
 
-                            dirClient = Optiuni.GetDirClient();
+                        client.SendConnectionInfo(localIP_string, Optiuni.EndpointPort, dirClient);
 
-                            client.SendConnectionInfo(localIP_string, Optiuni.EndpointPort, dirClient);
-
-                            SyncExec(dirClient, localIP_string, client);
-                        }
+                        SyncExec(dirClient, localIP_string, client);
                     }
-
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 //Utils.Log(ex.ToString());
             }
-
+            finally
+            {
+                if (client != null)
+                {
+                    if (client.State == System.ServiceModel.CommunicationState.Faulted)
+                    {
+                        client.Abort();
+                    }
+                    else
+                    {
+                        client.Close();
+                    }
+                }
+            }
 
             tim.Enabled = true;
         }

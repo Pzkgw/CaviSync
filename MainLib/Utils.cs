@@ -173,7 +173,7 @@ namespace MainLib
 
             try
             {
-                stream = File.Open(e.FullName, FileMode.Open, FileAccess.ReadWrite, FileShare.ReadWrite);
+                stream = File.Open(e.FullName, FileMode.Open, FileAccess.Read, FileShare.None);
             }
             catch (IOException)
             {
@@ -255,10 +255,10 @@ namespace MainLib
         }
 
 
-        public static bool IsEnglishLetter(char c)
-        {
-            return (c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z');
-        }
+        //public static bool IsEnglishLetter(char c)
+        //{
+        //    return (c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z');
+        //}
 
 
 

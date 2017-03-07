@@ -83,6 +83,7 @@
       <DependentUpon>ProjectInstaller.cs</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TestConexiune.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
