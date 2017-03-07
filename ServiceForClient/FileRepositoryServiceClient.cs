@@ -65,7 +65,7 @@ namespace ServiceForClient
             {
                 base.Channel.SendConnectionInfo(ip, port, path);
             }
-            catch (EndpointNotFoundException)
+            catch (Exception)//EndpointNotFoundException)
             {
             }
         }

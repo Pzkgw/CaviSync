@@ -126,7 +126,7 @@ namespace ServiceForClient
                     }
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 //Utils.Log(ex.ToString());
             }

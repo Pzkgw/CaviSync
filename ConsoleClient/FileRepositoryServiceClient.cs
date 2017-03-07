@@ -6,13 +6,13 @@ namespace ConsoleClient
 {
     public class FileRepositoryServiceClient : ClientBase<IFileRepositoryService>, IFileRepositoryService, IDisposable
     {
-        public FileRepositoryServiceClient() : base("FileRepositoryService")
-        {
+        //public FileRepositoryServiceClient() : base("FileRepositoryService")
+        //{
+        //    //
+        //}
 
-        }
-        public void SetEndpointAddress(string s)
+        public FileRepositoryServiceClient(string s) : base(BindClient.Get(s))
         {
-            Endpoint.Address = new EndpointAddress(s);
         }
 
         #region IFileRepositoryService Members
@@ -22,7 +22,7 @@ namespace ConsoleClient
             return base.Channel.GetFile(virtualPath);
         }
 
-        public bool GetPreUploadCheckResult(string clientIP, string directory, string file,  long lastWriteTimeUtcTicks, long fileSize)
+        public bool GetPreUploadCheckResult(string clientIP, string directory, string file, long lastWriteTimeUtcTicks, long fileSize)
         {
             try
             {

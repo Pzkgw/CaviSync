@@ -8,8 +8,8 @@
     <ProjectGuid>{0357B25D-7F29-4CBD-930B-5571D15B9969}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>FileServer.Services</RootNamespace>
-    <AssemblyName>FileServer.Services</AssemblyName>
+    <RootNamespace>MainLib</RootNamespace>
+    <AssemblyName>MainLib</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <FileUpgradeFlags>
@@ -92,6 +92,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BindClient.cs" />
+    <Compile Include="BindServer.cs" />
     <Compile Include="FileArgs.cs" />
     <Compile Include="FileRepositoryService.cs" />
     <Compile Include="FileUploadMessage.cs" />

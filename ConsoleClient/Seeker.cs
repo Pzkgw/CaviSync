@@ -53,7 +53,7 @@ namespace ConsoleClient
         private void SyncExec()
         {
             Optiuni.EndpointIP = "10.10.10.15";
-            Optiuni.dirClient = @"c:\sync\";
+            Optiuni.dirClient = @"c:\__###\SDL2\";
 
             try
             {
@@ -63,10 +63,8 @@ namespace ConsoleClient
                 string dirClient = Optiuni.GetDirClient();
 
                 // init conexiune cu serverul
-                using (FileRepositoryServiceClient client = new FileRepositoryServiceClient())
+                using (FileRepositoryServiceClient client = new FileRepositoryServiceClient(Optiuni.GetEndpointAddress()))
                 {
-                    // Trebuie setat exact dupa constructorul FileRepositoryServiceClient
-                    client.SetEndpointAddress(Optiuni.GetEndpointAddress());
                     client.SendConnectionInfo(localIP_string, Optiuni.EndpointPort, dirClient);
 
                     // foreach file in client directory ---> send it
@@ -139,9 +137,8 @@ namespace ConsoleClient
 
             StorageFileInfo[] files = null;
 
-            using (FileRepositoryServiceClient client = new FileRepositoryServiceClient())
+            using (FileRepositoryServiceClient client = new FileRepositoryServiceClient(Optiuni.GetEndpointAddress()))
             {
-                client.SetEndpointAddress(Optiuni.GetEndpointAddress());
                 files = client.List(null);
             }
 
