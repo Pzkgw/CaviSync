@@ -7,13 +7,13 @@ namespace ServiceForClient
 {
     public class FileRepositoryServiceClient : ClientBase<IFileRepositoryService>, IFileRepositoryService, IDisposable
     {
-        public FileRepositoryServiceClient() : base("FileRepositoryService")
-        {
+        //public FileRepositoryServiceClient() : base("FileRepositoryService")
+        //{
 
-        }
-        public void SetEndpointAddress(string s)
+        //}
+
+        public FileRepositoryServiceClient(string s) : base(BindClient.Get(s))
         {
-            Endpoint.Address = new EndpointAddress(s);
         }
 
         #region IFileRepositoryService Members

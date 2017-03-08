@@ -102,13 +102,10 @@ namespace ServiceForClient
                 IPAddress localIP = Utils.GetLocalIpAddress();
                 string dirClient = null, localIP_string = (localIP == null) ? null : localIP.ToString();
 
-                // init conexiune cu serverul
-                client = new FileRepositoryServiceClient();
-
                 Optiuni.EndpointIP = RegEdit.ClientGetServerIP();
 
-                // Trebuie setat exact dupa constructorul FileRepositoryServiceClient
-                client.SetEndpointAddress(Optiuni.GetEndpointAddress());
+                // init conexiune cu serverul
+                client = new FileRepositoryServiceClient(Optiuni.GetEndpointAddress());               
 
                 for (int i = 1; i < 4; i++)
                 {

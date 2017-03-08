@@ -9,10 +9,22 @@ namespace MainLib
         static ServiceHost host = null;
         static FileRepositoryService service = null;
 
+        static NetTcpBinding netTcpBinding = null;
+
+        static string str = "net.tcp://localhost:5000";
+
+        //static Uri tcpUri = null;
         static void Main(string[] args)
         {
 
             service = new FileRepositoryService();
+            host = new ServiceHost(service);
+
+            //tcpUri = new Uri(str);
+
+            //host = new ServiceHost(typeof(FileRepositoryService), tcpUri); // ,    
+
+            //service sau ((FileRepositoryService)host.SingletonInstance)
             service.RepositoryDirectory = Optiuni.GetDirServer();
 
             service.InfoSend += new InfoSendEventHandler(Service_InfoSend);
@@ -21,8 +33,16 @@ namespace MainLib
             service.FileUploaded += new FileEventHandler(Service_FileUploaded);
             service.FileDeleted += new FileEventHandler(Service_FileDeleted);
 
-            host = new ServiceHost(service); // typeof(FileRepositoryService),
             host.Faulted += new EventHandler(Host_Faulted);
+
+            netTcpBinding = BindServer.Get();
+
+            //ServiceMetadataBehavior mBehave = new ServiceMetadataBehavior();
+            //host.Description.Behaviors.Add(mBehave);
+            //host.AddServiceEndpoint(typeof(IMetadataExchange),
+            //  MetadataExchangeBindings.CreateMexTcpBinding(), "mex");
+
+            host.AddServiceEndpoint(typeof(IFileRepositoryService), netTcpBinding, str);
 
             try
             {
@@ -58,7 +78,7 @@ namespace MainLib
         {
             //Console.WriteLine(string.Format(" client {0}:{1} {2}", e.IP, e.Port, e.Path));
 
-            service.RepositoryHost = Optiuni.MakeNonComprehensiveDirectoryStringForServer(e.IP, e.Path);
+            ((FileRepositoryService)host.SingletonInstance).RepositoryHost = Optiuni.MakeNonComprehensiveDirectoryStringForServer(e.IP, e.Path);
         }
 
         static void Host_Faulted(object sender, EventArgs e)

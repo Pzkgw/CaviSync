@@ -36,7 +36,7 @@ namespace FileServerWinClient
 		{
 			StorageFileInfo[] files = null;
 
-			using (FileRepositoryServiceClient client = new FileRepositoryServiceClient())
+			using (FileRepositoryServiceClient client = new FileRepositoryServiceClient(Optiuni.GetEndpointAddress()))
 			{
 				files = client.List(null);
 			}
@@ -102,7 +102,7 @@ namespace FileServerWinClient
 					{
 						Stream downloadStream;
 
-						using (FileRepositoryServiceClient client = new FileRepositoryServiceClient())
+						using (FileRepositoryServiceClient client = new FileRepositoryServiceClient(Optiuni.GetEndpointAddress()))
 						{
 							downloadStream = client.GetFile(path);
 						}
@@ -152,7 +152,7 @@ namespace FileServerWinClient
 
                 using (Stream uploadStream = new FileStream(dlg.FileName, FileMode.Open))
 				{
-					using (FileRepositoryServiceClient client = new FileRepositoryServiceClient())
+					using (FileRepositoryServiceClient client = new FileRepositoryServiceClient(Optiuni.GetEndpointAddress()))
 					{                        
                         string ip = Utils.GetLocalIpAddress().ToString();
                         int port = Optiuni.EndpointPort;
@@ -183,7 +183,7 @@ namespace FileServerWinClient
 			{
 				string virtualPath = FileList.SelectedItems[0].SubItems[1].Text;
 
-				using (FileRepositoryServiceClient client = new FileRepositoryServiceClient())
+				using (FileRepositoryServiceClient client = new FileRepositoryServiceClient(Optiuni.GetEndpointAddress()))
 				{
 					client.DeleteFile(virtualPath);
 				}

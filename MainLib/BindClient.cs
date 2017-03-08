@@ -11,7 +11,6 @@ namespace MainLib
             NetTcpBinding binding = null;
             binding = new NetTcpBinding(SecurityMode.None);
 
-            binding.Name = "customTcpBinding";
             binding.MaxBufferPoolSize = 2147483647;
             binding.MaxBufferSize = 2147483647;
             binding.MaxReceivedMessageSize = 2147483647;

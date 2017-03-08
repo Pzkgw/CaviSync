@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.ServiceModel;
 using System.ServiceProcess;
@@ -15,6 +14,10 @@ namespace ServiceForServer
         FileRepositoryService service = null;
         
         Timer tim;
+
+        static NetTcpBinding netTcpBinding = null;
+
+        static string str = "net.tcp://localhost:5000";
 
         public ServerService()
         {
@@ -50,6 +53,10 @@ namespace ServiceForServer
 
             host = new ServiceHost(service); // typeof(FileRepositoryService),
             host.Faulted += new EventHandler(Host_Faulted);
+
+            netTcpBinding = BindServer.Get();
+
+            host.AddServiceEndpoint(typeof(IFileRepositoryService), netTcpBinding, str);
 
             try
             {

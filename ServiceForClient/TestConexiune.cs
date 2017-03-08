@@ -15,13 +15,9 @@ namespace ServiceForClient
 
             try
             {
-                client = new FileRepositoryServiceClient();
+                Optiuni.EndpointIP = RegEdit.ClientGetServerIP();
+                client = new FileRepositoryServiceClient(Optiuni.GetEndpointAddress());
                 {
-                    Optiuni.EndpointIP = RegEdit.ClientGetServerIP();
-
-                    // Trebuie setat exact dupa constructorul FileRepositoryServiceClient
-                    client.SetEndpointAddress(Optiuni.GetEndpointAddress());
-
                     if(!client.GetPreUploadCheckResult(
                         Optiuni.preTestClientIP, Optiuni.preTestDirectoryName, Optiuni.preTestFileName,
                         512, 1024))
